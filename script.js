@@ -464,7 +464,7 @@ const worksdesign = [
 {
     id: "w-design-01",
     title: "トキワの森「あんしん」Tシャツデザイン(背面)",
-    thumbnail: "assets/works/w-design/あんしん　デザイン.png",
+    thumbnail: "assets/works/w-design/あんしんジャケット.png",
     desc: "ロックバンド「トキワの森」様のTシャツデザイン(背面)を制作しました。",
     detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
     category: "design",
@@ -482,7 +482,7 @@ const worksdesign = [
 {
     id: "w-design-03",
     title: "ﾀﾄ「VOID」ジャケットデザイン",
-    thumbnail: "assets/works/w-design/VOIDジャケット3000px.png",
+    thumbnail: "assets/works/w-design/VOIDジャケット.png",
     desc: "ﾀﾄ様のオリジナル楽曲「VOID」及びそのジャケットデザインを制作しました。",
     detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
     category: "design",
@@ -491,7 +491,7 @@ const worksdesign = [
 {
     id: "w-design-04",
     title: "「Who’s the Witch」ジャケットデザイン",
-    thumbnail: "assets/works/w-design/(彩度強)桜羽エマ　ジャケット1(修正後).png",
+    thumbnail: "assets/works/w-design/桜羽エマジャケット1.png",
     desc: "`bootleg‘まのさばコンピ「Who’s the Witch」のジャケットデザインを制作しました。",
     detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
     category: "design",
@@ -1110,15 +1110,17 @@ function initNavScrollbar(){
   }
 
   let dragging = false;
-  thumb.addEventListener('mousedown', (e) => {
+  thumb.addEventListener('pointerdown', (e) => {
     dragging = true;
+    thumb.setPointerCapture(e.pointerId); // 指がつまみの外に出ても追従し続けるようにする
     e.preventDefault();
   });
-  window.addEventListener('mousemove', (e) => {
+  thumb.addEventListener('pointermove', (e) => {
     if(!dragging) return;
     scrollToPointer(e.clientY);
   });
-  window.addEventListener('mouseup', () => { dragging = false; });
+  thumb.addEventListener('pointerup', () => { dragging = false; });
+  thumb.addEventListener('pointercancel', () => { dragging = false; });
 
   viewPane.addEventListener('scroll', update);
   window.addEventListener('resize', update);

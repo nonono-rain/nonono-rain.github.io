@@ -51,7 +51,8 @@ button{ font-family: inherit; }
    ===================================================== */
 .app{
   display:flex;
-  height: 100vh;
+  height: 100vh;   /* 古いブラウザ向けの保険 */
+  height: 100dvh;  /* ブラウザのバー分を差し引いた「実際に見える高さ」 */
   width: 100vw;
 }
 
@@ -71,7 +72,7 @@ button{ font-family: inherit; }
   flex: 1;
   min-height: 0;
   display:flex;
-  align-items:center;
+  align-items: safe center; /* 縦の余白が足りないときは上寄せになり、アイコンと重ならないようにする */
 }
 
 .nav-pane__icon-wrap{
@@ -377,7 +378,7 @@ button{ font-family: inherit; }
    ===================================================== */
 .view__back{
   display:inline-block;
-  font-size: 12px;
+  font-size: 15px;
   color: var(--gray);
   margin-bottom: 40px;
   transition: color .2s var(--ease);
@@ -526,6 +527,7 @@ a:focus-visible, button:focus-visible{
   height:40px;
   background: #F8ABA6;
   cursor: grab;
+  touch-action: none; /* 指でドラッグしたときにページ側がスクロールしてしまわないようにする */
 }
 .nav-scrollbar__thumb:active{ cursor: grabbing; }
 
@@ -614,16 +616,21 @@ a:focus-visible, button:focus-visible{
 /* =====================================================
    RESPONSIVE
    ===================================================== */
-@media (max-width: 900px) and (orientation: portrait){
+@media (max-width: 900px) and (orientation: portrait), (max-height: 500px) and (orientation: landscape){
   html, body{ overflow: auto; height: auto; }
   .nav-pane{ display:none; }
   .app{ display:block; height:auto; }
   .view-pane{ width:100%; height:auto; border-left:none; }
-  .view{ min-height: calc(100vh - 56px); padding: 90px 6vw 70px; }
+  .view{
+    min-height: calc(100vh - 56px);  /* 古いブラウザ向けの保険 */
+    min-height: calc(100dvh - 56px);
+    padding: 90px 6vw 70px;
+  }
   #view-top.is-active{ display:block; padding-top: 80px; }
   .mobile-bar{ display:flex; }
   .blog-item{ grid-template-columns: 1fr; gap:6px; }
   .listening-grid{ gap: 12px; }
+  .view__inner{ margin: 0 auto; } /* コンテンツが画面幅より狭いときは中央に揃える（左寄りにならないように） */
 
   /* ライトボックス：スマホでは矢印・閉じるボタンの余白を詰めて画像を広く見せる */
   .design-lightbox__arrow{ padding: 8px; font-size: 26px; }

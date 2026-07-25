@@ -318,7 +318,85 @@ const originalDesign = [
   date: "2026-04-11" 
   },
 ];
-const mvWorks = [...mv, ...releases, ...originalDesign];
+// ORIGINALの「others」カテゴリの作品はまだ無いので、空の配列にしています
+// （中身を追加すれば「others」カテゴリに表示されます。書き方はmv・releases・originalDesignと同じです）
+const originalOthers = [
+  {  
+  id: "others-01", 
+  title: "ヒロイン",
+  artist: "重音テト",     
+  youtubeId: "1wCb_dUL8QE", 
+  category: "others",      
+  date: "2024-08-04" 
+  },
+  {  
+  id: "others-02", 
+  title: "会話記録",
+  artist: "ナースロボ＿タイプT",     
+  youtubeId: "jOgPZFkrJdA", 
+  category: "others",      
+  date: "2024-09-03" 
+  },
+  {  
+  id: "others-03", 
+  title: "アレシボメッセージなう",
+  artist: "ナースロボ＿タイプT",     
+  youtubeId: "j6ZyrQuX1es", 
+  category: "others",      
+  date: "2024-11-03" 
+  },
+  {  
+  id: "others-04", 
+  title: "大雨症候群(remake)",
+  artist: "デフォ子",     
+  youtubeId: "iput0DL6kpQ", 
+  category: "others",      
+  date: "2025-01-04" 
+  },
+  {  
+  id: "others-05", 
+  title: "特定班(remake)",
+  artist: "ナースロボ＿タイプT",     
+  youtubeId: "mkTXIsoXGaE", 
+  category: "others",      
+  date: "2025-04-04" 
+  },
+  {  
+  id: "others-06", 
+  title: "文字、ノート上の",
+  artist: "ナースロボ＿タイプT",     
+  youtubeId: "GponJnt0eOI", 
+  category: "others",      
+  date: "2025-05-24" 
+  },
+  {  
+  id: "others-07", 
+  title: "「なりますように！」メイキング動画",
+  artist: "作曲から映像制作までのメイキング",     
+  youtubeId: "8y5xmxVM5zQ", 
+  category: "others",      
+  date: "2026-02-14" 
+  },
+  {  
+  id: "others-08", 
+  title: "REEL 2025",
+  artist: "2025年に作った制作物まとめ",     
+  youtubeId: "zVnUdcKjlCo", 
+  category: "others",      
+  date: "2026-05-11" 
+  },
+  {  
+  id: "others-09", 
+  title: "雨のなか　歩いてみた",
+  artist: "はじめてのVlog風動画",     
+  youtubeId: "cV9jKpZZrw0", 
+  category: "others",      
+  date: "2026-06-12" 
+  },
+
+];
+
+const mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
 
 // MV以外の制作物
 // id: 一意のID(英数字。詳細ビューの表示に使うので他と被らないようにしてください)
@@ -327,9 +405,9 @@ const mvWorks = [...mv, ...releases, ...originalDesign];
 // desc: 一覧に出す短い説明（ひとこと）
 // detail: 詳細ビューに出す長めの説明（省略した場合は desc がそのまま使われます）
 // link: 指定すると、サムネイルをクリックしたときに詳細ビューを開く代わりに、このURLへ直接移動します（省略可・新しいタブで開きます）
-const video = [
+const works_video = [
 {
-    id: "video1",
+    id: "video01",
     title: "新兎わい様 配信OP「カオス☆ニート」",
     thumbnail: "assets/works/motion-01.jpg",
     youtubeId: "rqqlpDPVNk4",
@@ -339,7 +417,7 @@ const video = [
     date: "2024-02-11"
   },
 {
-    id: "video2",
+    id: "video02",
     title: "ミギハヤミ・コハク様 配信OP「放浪者を強くしてあげよう」",
     thumbnail: "assets/works/motion-01.jpg",
     youtubeId: "eXzCiyMD5AU",
@@ -349,7 +427,7 @@ const video = [
     date: "2024-08-05"
   },
 {
-    id: "video3",
+    id: "video03",
     title: "コトノネ - 感情線",
     thumbnail: "assets/works/motion-01.jpg",
     youtubeId: "kN6jMmZXN94",
@@ -359,7 +437,7 @@ const video = [
     date: "2025-06-27"
   },
 {
-    id: "video4",
+    id: "video04",
     title: "さよならエリクサー - 感情市街記録",
     thumbnail: "assets/works/motion-01.jpg",
     youtubeId: "uP-AofENa_k",
@@ -369,7 +447,7 @@ const video = [
     date: "2025-10-15"
   },
 {
-    id: "video5",
+    id: "video05",
     title: "熱異常 - 百軒カナリcover",
     thumbnail: "assets/works/motion-01.jpg",
     youtubeId: "z2YZLFyP2NM",
@@ -379,7 +457,7 @@ const video = [
     date: "2025-11-20"
   },
 {
-    id: "video6",
+    id: "video06",
     title: "メルカリで愛が買える時代になったら - はしメロ",
     thumbnail: "assets/works/motion-01.jpg",
     youtubeId: "KT603xYXNIA",
@@ -389,7 +467,7 @@ const video = [
     date: "2025-10-15"
   },
 {
-    id: "video7",
+    id: "video07",
     title: "NEO愛桜宣言 - 櫻坂46 佐藤愛桜",
     thumbnail: "assets/works/motion-01.jpg",
     youtubeId: "c1_-qKAA6I4",
@@ -399,7 +477,7 @@ const video = [
     date: "2026-02-26"
   },
 {
-    id: "video8",
+    id: "video08",
     title: "あした地球がこなごなになっても - kaza×日あさ寝×桃寝ちのい×N×恋白るな×エリモ・クドリャフカcover",
     thumbnail: "assets/works/motion-01.jpg",
     youtubeId: "k1qvo9tH1QQ",
@@ -409,17 +487,7 @@ const video = [
     date: "2026-03-11"
   },
 {
-    id: "video9",
-    title: "VOID - ﾀﾄ",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "LqAWnhfqJCw",
-    desc: "曲と映像を制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: ["video", "music"],
-    date: "2026-3-14"
-  },
-{
-    id: "video10",
+    id: "video09",
     title: "キルミーダーリン - 灰色ねむり×null",
     thumbnail: "assets/works/motion-01.jpg",
     youtubeId: "06K_77uaUNk",
@@ -430,37 +498,21 @@ const video = [
   }
 ];
 
-const music = [
+const works_music = [
 {
-    id: "editing-01",
-    title: "ダイジェスト動画編集",
-    thumbnail: "assets/works/editing-01.jpg",
-    desc: "イベント映像のダイジェスト編集を行いました。",
-    detail: "イベント映像のダイジェスト編集を行いました。当日の熱量が伝わるよう、テンポの良いカット割りとBGM選定にこだわりました。",
-    category: "music",
-    date: "2025-11-05"
+    id: "w_music01",
+    title: "VOID - ﾀﾄ",
+    thumbnail: "assets/works/motion-01.jpg",
+    youtubeId: "LqAWnhfqJCw",
+    desc: "曲と映像を制作しました。",
+    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
+    category: ["video", "music"],
+    date: "2026-3-14"
   },
-{
-    id: "editing-02",
-    title: "（仮）ライブ配信のハイライト編集",
-    thumbnail: "assets/works/editing-02.jpg",
-    desc: "（仮データ）動作確認用のサンプルです。",
-    detail: "（仮データ）動作確認用のサンプルです。",
-    category: "music",
-    date: "2026-04-15"
-  },
-{
-    id: "editing-03",
-    title: "（仮）BGM選定・ミックス",
-    thumbnail: "assets/works/editing-03.jpg",
-    desc: "（仮データ）動作確認用のサンプルです。",
-    detail: "（仮データ）動作確認用のサンプルです。",
-    category: "music",
-    date: "2025-09-20"
-  }
+
 ];
 
-const worksdesign = [
+const works_design = [
 {
     id: "w-design-01",
     title: "トキワの森「あんしん」Tシャツデザイン(背面)",
@@ -472,15 +524,6 @@ const worksdesign = [
   },
 {
     id: "w-design-02",
-    title: "ラメリィ「メズマライザー」Cover動画サムネイル",
-    thumbnail: "assets/works/w-design/メズマライザーサムネイル5_2.png",
-    desc: "「メズマライザー」cover動画のサムネイルを制作しました。",
-    detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
-    category: "design",
-    date: "2024-07-06"
-  },
-{
-    id: "w-design-03",
     title: "ﾀﾄ「VOID」ジャケットデザイン",
     thumbnail: "assets/works/w-design/VOIDジャケット.png",
     desc: "ﾀﾄ様のオリジナル楽曲「VOID」及びそのジャケットデザインを制作しました。",
@@ -489,7 +532,7 @@ const worksdesign = [
     date: "2026-03-16"
   },
 {
-    id: "w-design-04",
+    id: "w-design-03",
     title: "「Who’s the Witch」ジャケットデザイン",
     thumbnail: "assets/works/w-design/桜羽エマジャケット1.png",
     desc: "`bootleg‘まのさばコンピ「Who’s the Witch」のジャケットデザインを制作しました。",
@@ -500,37 +543,19 @@ const worksdesign = [
 
 ];
 
-const others = [
+const works_others = [
 {
-    id: "design-01",
-    title: "配信用オーバーレイ",
-    thumbnail: "assets/works/design-01.jpg",
-    desc: "配信画面用のオーバーレイデザインを担当しました。",
-    detail: "配信画面用のオーバーレイデザインを担当しました。視聴者にとって見やすく、かつ配信者の個性が出るデザインを意識しています。",
+    id: "w-others-01",
+    title: "ラメリィ「メズマライザー」Cover動画サムネイル",
+    thumbnail: "assets/works/w-design/メズマライザーサムネイル5_2.png",
+    desc: "「メズマライザー」cover動画のサムネイルを制作しました。",
+    detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
     category: "others",
-    date: "2026-01-10"
+    date: "2024-07-06"
   },
-{
-    id: "design-02",
-    title: "（仮）チャンネルバナーデザイン",
-    thumbnail: "assets/works/design-02.jpg",
-    desc: "（仮データ）動作確認用のサンプルです。",
-    detail: "（仮データ）動作確認用のサンプルです。",
-    category: "others",
-    date: "2026-02-22"
-  },
-{
-    id: "design-03",
-    title: "（仮）ウェブサイトデザイン",
-    thumbnail: "assets/works/design-03.jpg",
-    desc: "（仮データ）動作確認用のサンプルです。",
-    detail: "（仮データ）動作確認用のサンプルです。",
-    category: "others",
-    date: "2025-10-30"
-  }
 ];
 
-const otherWorks = [...video, ...music, ...worksdesign, ...others];
+const otherWorks = [...works_video, ...works_music, ...works_design, ...works_others];
 
 
 // ブログ記事
@@ -1040,8 +1065,9 @@ function closeMobileNav(){
   document.body.classList.remove('nav-open');
   if(menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
 }
-if(menuToggle){
-  menuToggle.addEventListener('click', () => {
+const mobileMenuTrigger = document.getElementById('mobileMenuTrigger');
+if(mobileMenuTrigger){
+  mobileMenuTrigger.addEventListener('click', () => {
     const isOpen = document.body.classList.contains('nav-open');
     isOpen ? closeMobileNav() : openMobileNav();
   });
@@ -1055,8 +1081,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderListening();
   if(menuToggle) buildMobileNav();
   setupCategoryNav();
-  const yearEl = document.getElementById('year');
-  if(yearEl) yearEl.textContent = new Date().getFullYear();
   initCursorTrail();
   initNavScrollbar();
 });
@@ -1064,7 +1088,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* =====================================================
    左メニュー右端のミニスクロールバー
    ・道（トラック）は透明のまま、正方形のつまみだけを表示する
-   ・つまみをドラッグ、またはトラックをクリックすると右側コンテンツがスクロールする
+   ・つまみをドラッグ（マウス・タッチ両対応）すると右側コンテンツがスクロールする
    ===================================================== */
 let updateNavScrollbar = () => {};
 

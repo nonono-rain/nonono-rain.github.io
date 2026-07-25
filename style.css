@@ -148,13 +148,6 @@ button{ font-family: inherit; }
   margin-bottom: 16px;
   display:block;
 }
-.view__title-row{
-  display:flex;
-  align-items:baseline;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: 22px;
-}
 .view__title{
   font-weight: 700;
   font-size: clamp(30px, 3.4vw, 44px);
@@ -201,6 +194,7 @@ button{ font-family: inherit; }
   display:flex;
   align-items:center;
   gap: 8px;
+  cursor: pointer;
 }
 .mobile-bar__menu-label{
   font-family: var(--font-family);
@@ -481,11 +475,6 @@ button{ font-family: inherit; }
 .contact-image img{
   width:100%; height:auto; display:block;
 }
-.footer{
-  font-size: 11px;
-  color: var(--gray);
-}
-
 /* =====================================================
    FOCUS
    ===================================================== */

@@ -171,7 +171,7 @@ const releases = [
   title: "不こうにしちゃう",
   artist: "donor.",
   youtubeId: "動画ID",
-  thumbnail: "assets/original/jacket/ブラックボックス！ジャケット.png",
+  thumbnail: "assets/original/jacket/不こうにしちゃうジャケット.jpeg",
   link: "https://big-up.style/osqhAuFWOH",
   category: "releases",
   date: "2026-03-22" 
@@ -547,8 +547,9 @@ const works_others = [
 {
     id: "w-others-01",
     title: "ラメリィ「メズマライザー」Cover動画サムネイル",
-    thumbnail: "assets/works/w-design/メズマライザーサムネイル5_2.png",
-    desc: "「メズマライザー」cover動画のサムネイルを制作しました。",
+    thumbnail: "assets/works/motion-01.jpg",
+    youtubeId: "vltGaTpJiC4",
+    desc: "ラメリィ様の「メズマライザー」cover動画のサムネイルを制作しました。",
     detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
     category: "others",
     date: "2024-07-06"

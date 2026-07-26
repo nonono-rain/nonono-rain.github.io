@@ -590,15 +590,29 @@ function renderListening(){
   const grid = document.getElementById('listeningGrid');
   if(!grid) return;
 
-  grid.innerHTML = listeningSongs.map((song, i) => `
-    <div class="listening-item" data-index="${i}">
+  const renderItem = (song, i) => {
+    const isSmall = (i === 1 || i === 2); // 2番目・3番目は小さいサイズ（縦型スマホのときだけ効く）
+    return `
+    <div class="listening-item${isSmall ? ' listening-item--small' : ''}" data-index="${i}">
       <div class="listening-item__thumb">
         <img src="https://img.youtube.com/vi/${song.youtubeId}/maxresdefault.jpg" alt="${song.title}" loading="lazy">
         <span class="listening-item__play"></span>
       </div>
       <p class="listening-item__title">${song.title}</p>
+    </div>`;
+  };
+
+  // 4つ丸ごとの「格子」ではなく、上段・下段それぞれの中で2つが隙間なく並ぶ形にする
+  grid.innerHTML = `
+    <div class="listening-row">
+      ${renderItem(listeningSongs[0], 0)}
+      ${renderItem(listeningSongs[1], 1)}
     </div>
-  `).join('');
+    <div class="listening-row">
+      ${renderItem(listeningSongs[2], 2)}
+      ${renderItem(listeningSongs[3], 3)}
+    </div>
+  `;
 
   grid.querySelectorAll('.listening-item').forEach(item => {
     item.addEventListener('click', () => {

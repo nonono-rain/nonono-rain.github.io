@@ -628,8 +628,10 @@ a:focus-visible, button:focus-visible{
   .design-lightbox__box{ width: 86vw; }
   .design-lightbox__img-wrap{ height: 70vh; }
 
-  /* TOPを表示しているときだけ、menuボタンの当たり判定がやわらかく点滅する（3秒に1回） */
-  body.is-viewing-top #mobileMenuTrigger{
+  /* TOPを表示しているときだけ「menu→」の文字がやわらかく点滅する（3秒に1回）
+     ※ハンバーガーアイコンの親要素ごと動かすと、一部のスマホブラウザで
+       アイコンの表示が更新されなくなる不具合が起きるため、文字だけを動かす */
+  body.is-viewing-top .mobile-bar__menu-label{
     animation: menuTriggerPulse 3s ease-in-out infinite;
   }
 }

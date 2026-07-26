@@ -218,9 +218,9 @@ button{ font-family: inherit; }
 .mobile-bar__toggle span:nth-child(1){ top:0; }
 .mobile-bar__toggle span:nth-child(2){ top:7px; }
 .mobile-bar__toggle span:nth-child(3){ top:14px; }
-.mobile-bar__toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
-.mobile-bar__toggle[aria-expanded="true"] span:nth-child(2){ opacity:0; }
-.mobile-bar__toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+body.nav-open .mobile-bar__toggle span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+body.nav-open .mobile-bar__toggle span:nth-child(2){ opacity:0; }
+body.nav-open .mobile-bar__toggle span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
 
 .mobile-nav{
   position: fixed;

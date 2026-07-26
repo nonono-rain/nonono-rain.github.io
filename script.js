@@ -1012,6 +1012,10 @@ function switchPanel(panelName){
 
   // パネルが変わると中身の高さも変わるので、スクロールバーの表示・つまみの位置を更新する
   requestAnimationFrame(updateNavScrollbar);
+
+  // 画面が切り替わったら、スマホのメニューは必ず閉じておく（閉じ忘れの保険）
+  document.body.classList.remove('nav-open');
+  if(menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
 }
 
 document.querySelectorAll('a[data-panel]').forEach(el => {

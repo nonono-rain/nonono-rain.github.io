@@ -699,7 +699,7 @@ function openBlogDetail(post){
   document.getElementById('blogDetailTitle').textContent = post.title;
   document.getElementById('blogDetailBody').textContent = post.body || post.excerpt;
 
-  switchPanel('blog-detail');
+  switchPanel('blog-detail', true);
 }
 
 /* =====================================================
@@ -718,7 +718,7 @@ function openOriginalDetail(id){
   document.getElementById('originalDetailTitle').textContent = w.title;
   document.getElementById('originalDetailBody').textContent = w.artist;
 
-  switchPanel('original-detail');
+  switchPanel('original-detail', true);
 }
 
 /* =====================================================
@@ -895,7 +895,7 @@ function openWorkDetail(id){
   document.getElementById('workDetailTitle').textContent = w.title;
   document.getElementById('workDetailBody').textContent = w.detail || w.desc;
 
-  switchPanel('work-detail');
+  switchPanel('work-detail', true);
 }
 
 /* =====================================================
@@ -924,17 +924,13 @@ function openCategoryView(section, category){
     const items = mvWorks.filter(w => matchesCategory(w, cat)).sort(byNewest);
     renderThumbList('originalCategoryGrid', items, 'original');
     document.getElementById('originalCategoryLabel').textContent = cat;
-    switchPanel('original-category');
+    switchPanel('original-category', true);
   }else{
     const items = otherWorks.filter(w => matchesCategory(w, cat)).sort(byNewest);
     renderThumbList('worksCategoryGrid', items, 'work');
     document.getElementById('worksCategoryLabel').textContent = cat;
-    switchPanel('works-category');
+    switchPanel('works-category', true);
   }
-
-  // カテゴリをクリックしたときは常に一番上から表示する
-  // （詳細ビューの「戻る」から来たときだけ、switchPanel側の仕組みでスクロール位置が保たれる）
-  if(viewPane) viewPane.scrollTop = 0;
 }
 
 function setupCategoryNav(){
@@ -974,7 +970,7 @@ const VIDEO_PANELS = {
 // 各パネルのスクロール位置を覚えておいて、戻ってきたときに続きから見られるようにする
 const scrollPositions = {};
 
-function switchPanel(panelName){
+function switchPanel(panelName, forceTop){
   const currentActive = document.querySelector('.view.is-active');
 
   if(currentActive){
@@ -1004,9 +1000,9 @@ function switchPanel(panelName){
   // TOPを表示中かどうかをbodyに反映する（縦型スマホでのmenuボタン点滅に使う）
   document.body.classList.toggle('is-viewing-top', panelName === 'top');
 
-  // 戻ってきたパネルは、前回見ていたスクロール位置を復元（初回は0）
+  // 「戻る」リンクのときだけ前回のスクロール位置を復元し、それ以外(メニューからの移動)は常に一番上から表示する
   // PC・スマホどちらでも正しい方に反映されるよう、両方に対して設定する
-  const restoreScroll = (targetView && scrollPositions[targetView.id]) || 0;
+  const restoreScroll = forceTop ? 0 : ((targetView && scrollPositions[targetView.id]) || 0);
   if(viewPane) viewPane.scrollTop = restoreScroll;
   window.scrollTo(0, restoreScroll);
 
@@ -1020,7 +1016,9 @@ function switchPanel(panelName){
 document.querySelectorAll('a[data-panel]').forEach(el => {
   el.addEventListener('click', (e) => {
     e.preventDefault();
-    switchPanel(el.dataset.panel);
+    // 「← back」のリンクだけは前回のスクロール位置を復元し、それ以外は常に一番上から表示する
+    const isBackLink = el.classList.contains('view__back');
+    switchPanel(el.dataset.panel, !isBackLink);
     closeMobileNav();
   });
 });
@@ -1061,7 +1059,7 @@ function buildMobileNav(){
   mobileNav.querySelectorAll('a[data-panel]').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
-      switchPanel(a.dataset.panel);
+      switchPanel(a.dataset.panel, true);
       closeMobileNav();
     });
   });

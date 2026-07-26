@@ -324,6 +324,7 @@ button{ font-family: inherit; }
 }
 .listening-item{
   cursor:pointer;
+  min-width: 0; /* グリッドのマスが中身のサイズで勝手に広がり、正方形がズレるのを防ぐ */
 }
 .listening-item__thumb{
   width:100%;
@@ -618,6 +619,12 @@ a:focus-visible, button:focus-visible{
   .mobile-bar{ display:flex; }
   .blog-item{ grid-template-columns: 1fr; gap:6px; }
   .listening-grid{ gap: 12px; }
+  /* 右上(2番目)・左下(3番目)のサムネイルだけ少し小さくして、横スクロールなしで4つとも収まるようにする */
+  .listening-item:nth-child(2) .listening-item__thumb,
+  .listening-item:nth-child(3) .listening-item__thumb{
+    width: 100%;
+    margin: 0 auto;
+  }
   .view__inner{ margin: 0 auto; } /* コンテンツが画面幅より狭いときは中央に揃える（左寄りにならないように） */
 
   /* ライトボックス：スマホでは矢印・閉じるボタンの余白を詰めて画像を広く見せる */

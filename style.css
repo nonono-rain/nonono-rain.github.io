@@ -142,7 +142,7 @@ button{ font-family: inherit; }
 
 .view__head{ margin-bottom: 64px; max-width: 560px; }
 .view__eyebrow{
-  font-size: 12px;
+  font-size: 15px;
   letter-spacing: .1em;
   color: var(--gray);
   margin-bottom: 16px;
@@ -628,4 +628,14 @@ a:focus-visible, button:focus-visible{
   .design-lightbox__close{ top: 12px; left: 12px; font-size: 32px; }
   .design-lightbox__box{ width: 86vw; }
   .design-lightbox__img-wrap{ height: 70vh; }
+
+  /* TOPを表示しているときだけ、menuボタンの当たり判定がやわらかく点滅する（3秒に1回） */
+  body.is-viewing-top #mobileMenuTrigger{
+    animation: menuTriggerPulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes menuTriggerPulse{
+  0%, 80%, 100%{ opacity: 1; }
+  40%{ opacity: .25; }
 }

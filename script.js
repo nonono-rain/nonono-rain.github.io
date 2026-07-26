@@ -979,7 +979,10 @@ function switchPanel(panelName){
 
   if(currentActive){
     // 離れるパネルのスクロール位置を保存
-    scrollPositions[currentActive.id] = viewPane ? viewPane.scrollTop : 0;
+    // PCではviewPaneが、スマホでは画面(ウィンドウ)全体がスクロールするので、
+    // 実際に動いている方の値を保存する
+    const currentScroll = (viewPane ? viewPane.scrollTop : 0) || window.scrollY || 0;
+    scrollPositions[currentActive.id] = currentScroll;
 
     // 動画を再生しているパネルから離れるときは、再生を止めるために中身を空にする
     if(VIDEO_PANELS[currentActive.id] && currentActive.id !== `view-${panelName}`){
@@ -998,10 +1001,14 @@ function switchPanel(panelName){
   const navGroup = (targetView && targetView.dataset.navGroup) || panelName;
   navListItems.forEach(li => li.classList.toggle('is-active', li.dataset.panel === navGroup));
 
+  // TOPを表示中かどうかをbodyに反映する（縦型スマホでのmenuボタン点滅に使う）
+  document.body.classList.toggle('is-viewing-top', panelName === 'top');
+
   // 戻ってきたパネルは、前回見ていたスクロール位置を復元（初回は0）
-  if(viewPane){
-    viewPane.scrollTop = (targetView && scrollPositions[targetView.id]) || 0;
-  }
+  // PC・スマホどちらでも正しい方に反映されるよう、両方に対して設定する
+  const restoreScroll = (targetView && scrollPositions[targetView.id]) || 0;
+  if(viewPane) viewPane.scrollTop = restoreScroll;
+  window.scrollTo(0, restoreScroll);
 
   // パネルが変わると中身の高さも変わるので、スクロールバーの表示・つまみの位置を更新する
   requestAnimationFrame(updateNavScrollbar);

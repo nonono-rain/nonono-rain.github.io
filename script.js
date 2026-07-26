@@ -570,10 +570,10 @@ const blogPosts = [
 
 // 「椎野が最近聴いている曲！」ページ（アイコンをクリックすると表示）。ちょうど4曲になるようにしてください
 const listeningSongs = [
+  { title: "さよならできなくてごめんね - Ç¢Çª", youtubeId: "RRAz-XMdJ3w" },
+  { title: "ウザ - 城戸胎生", youtubeId: "YDENY5-ZI2E" },
   { title: "もう二度と会えないといいね！- kaza", youtubeId: "BhheEkdarXI" },
-  { title: "発育とマニエリスム - EMA×ぎゅる子", youtubeId: "0afgaQg9Dt8" },
-  { title: "アンテナ - 感情市街記録", youtubeId: "bThH7UfzeuY" },
-  { title: "遺書 - キタニタツヤ", youtubeId: "bcEDagHXQEU" },
+  { title: "転がるくせ - 椎野乃々", youtubeId: "p0gfjEGm-Bc" },
 ];
 
 /* =====================================================

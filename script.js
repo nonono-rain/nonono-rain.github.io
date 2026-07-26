@@ -1014,8 +1014,7 @@ function switchPanel(panelName){
   requestAnimationFrame(updateNavScrollbar);
 
   // 画面が切り替わったら、スマホのメニューは必ず閉じておく（閉じ忘れの保険）
-  document.body.classList.remove('nav-open');
-  if(menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+  closeMobileNav();
 }
 
 document.querySelectorAll('a[data-panel]').forEach(el => {
@@ -1069,13 +1068,31 @@ function buildMobileNav(){
   // original/worksとカテゴリ項目はsetupCategoryNav()側でまとめて登録されます
 }
 
+// ハンバーガーの3本線を直接取得しておく（CSSのクラスに頼らず、ここで見た目を確定させる）
+const menuToggleSpans = menuToggle ? menuToggle.querySelectorAll('span') : [];
+
+function setMenuIconState(isOpen){
+  if(!menuToggleSpans.length) return;
+  if(isOpen){
+    menuToggleSpans[0].style.transform = 'translateY(7px) rotate(45deg)';
+    menuToggleSpans[1].style.opacity = '0';
+    menuToggleSpans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+  }else{
+    menuToggleSpans[0].style.transform = '';
+    menuToggleSpans[1].style.opacity = '';
+    menuToggleSpans[2].style.transform = '';
+  }
+}
+
 function openMobileNav(){
   document.body.classList.add('nav-open');
   if(menuToggle) menuToggle.setAttribute('aria-expanded', 'true');
+  setMenuIconState(true);
 }
 function closeMobileNav(){
   document.body.classList.remove('nav-open');
   if(menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+  setMenuIconState(false);
 }
 const mobileMenuTrigger = document.getElementById('mobileMenuTrigger');
 if(mobileMenuTrigger){

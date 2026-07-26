@@ -142,7 +142,7 @@ button{ font-family: inherit; }
 
 .view__head{ margin-bottom: 64px; max-width: 560px; }
 .view__eyebrow{
-  font-size: 15px;
+  font-size: 14px;
   letter-spacing: .1em;
   color: var(--gray);
   margin-bottom: 16px;
@@ -218,9 +218,8 @@ button{ font-family: inherit; }
 .mobile-bar__toggle span:nth-child(1){ top:0; }
 .mobile-bar__toggle span:nth-child(2){ top:7px; }
 .mobile-bar__toggle span:nth-child(3){ top:14px; }
-body.nav-open .mobile-bar__toggle span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
-body.nav-open .mobile-bar__toggle span:nth-child(2){ opacity:0; }
-body.nav-open .mobile-bar__toggle span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+/* ハンバーガーの見た目(3本線⇔×)はCSSのクラスではなく、
+   script.js側で直接style指定して切り替えます（表示のズレを防ぐため） */
 
 .mobile-nav{
   position: fixed;

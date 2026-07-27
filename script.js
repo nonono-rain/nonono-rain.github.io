@@ -462,7 +462,10 @@ function openBlogDetail(post){
   document.getElementById('blogDetailDate').textContent = formatDate(post.date);
   document.getElementById('blogDetailTitle').textContent = post.title;
   const blogBodyEl = document.getElementById('blogDetailBody');
-  blogBodyEl.innerHTML = renderMarkdown(post.body || post.excerpt);
+  // ひとこと説明(excerpt)はmvのアーティスト名と同じスタイル(detail-artist)で表示し、空欄なら何も出さない
+  const excerptHtml = post.excerpt ? `<p class="detail-artist">${post.excerpt}</p>` : '';
+  const bodyHtml = post.body ? renderMarkdown(post.body) : '';
+  blogBodyEl.innerHTML = excerptHtml + bodyHtml;
   groupConsecutiveImages(blogBodyEl);
   enableImageZoom(blogBodyEl);
   enhanceYoutubeEmbeds(blogBodyEl);

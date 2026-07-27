@@ -491,6 +491,7 @@ function openOriginalDetail(id){
   originalBodyEl.innerHTML = `<p class="detail-artist">${w.artist || ''}</p>${bodyHtml}`;
   groupConsecutiveImages(originalBodyEl);
   enableImageZoom(originalBodyEl);
+  enhanceYoutubeEmbeds(originalBodyEl);
   enhanceTweetEmbeds(originalBodyEl);
 
   switchPanel('original-detail', true);
@@ -672,6 +673,7 @@ function openWorkDetail(id){
   workBodyEl.innerHTML = renderMarkdown(w.detail || w.desc);
   groupConsecutiveImages(workBodyEl);
   enableImageZoom(workBodyEl);
+  enhanceYoutubeEmbeds(workBodyEl);
   enhanceTweetEmbeds(workBodyEl);
 
   switchPanel('work-detail', true);
@@ -1079,6 +1081,28 @@ function groupConsecutiveImages(container){
       i++;
     }
   }
+}
+
+/* =====================================================
+   YouTubeの動画リンクを埋め込みプレーヤーに変換する
+   ・本文中で、YouTubeの動画URLだけが単独で書かれている行が対象です
+   ===================================================== */
+function enhanceYoutubeEmbeds(container){
+  if(!container) return;
+  const ytPattern = /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=([\w-]{11})|youtu\.be\/([\w-]{11}))/i;
+  const paragraphs = container.querySelectorAll('p');
+  paragraphs.forEach(p => {
+    const onlyChildLink = p.children.length === 1 && p.children[0].tagName === 'A' && p.textContent.trim() === p.children[0].textContent.trim();
+    if(!onlyChildLink) return;
+    const href = p.children[0].getAttribute('href') || '';
+    const match = href.match(ytPattern);
+    if(!match) return;
+    const videoId = match[1] || match[2];
+    const wrap = document.createElement('div');
+    wrap.className = 'yt-embed';
+    wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+    p.replaceWith(wrap);
+  });
 }
 
 /* =====================================================

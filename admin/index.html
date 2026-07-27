@@ -40,12 +40,28 @@
     });
     CMS.registerEditorComponent({
       id: 'single-image',
-      label: '単一Image（大きく表示）',
-      fields: [{ name: 'src', label: '画像', widget: 'image' }],
-      pattern: /^\{fullimg\}(.*?)\{\/fullimg\}$/,
-      fromBlock: match => ({ src: match[1] }),
-      toBlock: data => `{fullimg}${data.src}{/fullimg}`,
-      toPreview: data => `<img src="${data.src}" style="width:100%;" />`,
+      label: 'Image(大)',
+      fields: [
+        { name: 'src', label: '画像', widget: 'image' },
+        { name: 'text', label: '説明書き(任意)', widget: 'string', required: false },
+      ],
+      pattern: /^\{fullimg src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
+      fromBlock: match => ({ src: match[1], text: match[2] || '' }),
+      toBlock: data => `{fullimg src="${data.src || ''}"${data.text ? ` text="${data.text}"` : ''}}`,
+      toPreview: data => `<img src="${data.src}" style="width:100%;" />${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
+    });
+    // 標準の「Image」ボタンを上書きして、ALT/TITLEの代わりに「説明書き」欄だけを持つ形にする
+    CMS.registerEditorComponent({
+      id: 'image',
+      label: 'Image(小)',
+      fields: [
+        { name: 'src', label: '画像', widget: 'image' },
+        { name: 'text', label: '説明書き(任意)', widget: 'string', required: false },
+      ],
+      pattern: /^\{img src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
+      fromBlock: match => ({ src: match[1], text: match[2] || '' }),
+      toBlock: data => `{img src="${data.src || ''}"${data.text ? ` text="${data.text}"` : ''}}`,
+      toPreview: data => `<img src="${data.src}" style="max-width:100%;" />${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
     });
   </script>
 </body>

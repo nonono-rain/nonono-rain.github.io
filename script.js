@@ -777,10 +777,12 @@ function switchPanel(panelName, forceTop){
   navListItems.forEach(li => li.classList.toggle('is-active', li.dataset.panel === navGroup));
 
   // TOPを表示中かどうかをbodyに反映する（縦型スマホでのmenuボタン点滅に使う）
-  // 一度クラスを外してから強制的に再描画させ、TOPに戻るたびに必ず点滅が最初から再生されるようにする
+  // 「わたしを構成する音楽」ページもTOPの仲間として扱い、点滅を継続させる
+  // 一度クラスを外してから強制的に再描画させ、戻るたびに必ず点滅が最初から再生されるようにする
   const menuLabel = document.querySelector('.mobile-bar__menu-label');
+  const isTopFamily = panelName === 'top' || panelName === 'listening';
   document.body.classList.remove('is-viewing-top');
-  if(panelName === 'top'){
+  if(isTopFamily){
     if(menuLabel) void menuLabel.offsetWidth; // 強制再描画（リフロー）
     document.body.classList.add('is-viewing-top');
   }
@@ -921,7 +923,10 @@ function applyCustomFormatting(text){
     .replace(/\{large\}([\s\S]*?)\{\/large\}/g, '<span class="text-lg">$1</span>')
     .replace(/\{small\}([\s\S]*?)\{\/small\}/g, '<span class="text-sm">$1</span>')
     .replace(/\{pink\}([\s\S]*?)\{\/pink\}/g, '<span class="text-pink">$1</span>')
-    .replace(/\{fullimg\}([\s\S]*?)\{\/fullimg\}/g, (_, url) => `<div class="img-full"><img src="${url.trim()}" alt=""></div>`);
+    .replace(/\{img src="([^"]*)"(?:\s+text="([^"]*)")?\}/g, (_, src, caption) =>
+      `<div class="img-unit"><img src="${src}" alt="">${caption ? `<span class="img-caption">${caption}</span>` : ''}</div>`)
+    .replace(/\{fullimg src="([^"]*)"(?:\s+text="([^"]*)")?\}/g, (_, src, caption) =>
+      `<div class="img-full"><img src="${src}" alt="">${caption ? `<span class="img-caption">${caption}</span>` : ''}</div>`);
 }
 
 function renderMarkdown(text){
@@ -1054,23 +1059,21 @@ function groupConsecutiveImages(container){
   if(!container) return;
   const children = Array.from(container.children);
   let i = 0;
-  const isImageOnlyParagraph = el =>
-    el && el.tagName === 'P' && el.children.length === 1 && el.children[0].tagName === 'IMG';
+  const isSmallImageUnit = el => el && el.classList && el.classList.contains('img-unit');
 
   while(i < children.length){
-    if(isImageOnlyParagraph(children[i])){
+    if(isSmallImageUnit(children[i])){
       const group = [children[i]];
       let j = i + 1;
-      while(j < children.length && isImageOnlyParagraph(children[j])){
+      while(j < children.length && isSmallImageUnit(children[j])){
         group.push(children[j]);
         j++;
       }
-      if(group.length > 1){
-        const wrapper = document.createElement('div');
-        wrapper.className = 'img-grid';
-        group[0].parentNode.insertBefore(wrapper, group[0]);
-        group.forEach(p => wrapper.appendChild(p));
-      }
+      // 1枚だけのときも必ずグループ化して、常に「小」サイズで表示されるようにする
+      const wrapper = document.createElement('div');
+      wrapper.className = 'img-grid';
+      group[0].parentNode.insertBefore(wrapper, group[0]);
+      group.forEach(el => wrapper.appendChild(el));
       i = j;
     }else{
       i++;

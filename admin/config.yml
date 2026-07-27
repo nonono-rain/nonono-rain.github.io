@@ -2,8 +2,8 @@ backend:
   name: github
   repo: nonoshiino/nonoshiino.github.io   # ご自身のリポジトリ名に合わせて変更してください
   branch: main
-  # base_url と auth_endpoint は、次のステップ(認証用Workerの設定)で使う値に置き換えます
-  base_url: https://REPLACE_WITH_WORKER_URL
+  # 認証用Cloudflare Worker(GitHub OAuthプロキシ)のURL
+  base_url: https://nonoshiino-cms-auth.nonono-rain22.workers.dev
   auth_endpoint: auth
 
 # 画像をアップロードしたときの保存先フォルダと、サイト上での参照パス

@@ -883,8 +883,9 @@ async function loadContentData(){
       fetch('data/mv.json').then(res => res.json()),
       fetch('data/works.json').then(res => res.json())
     ]);
-    mv = mvData;
-    otherWorks = worksData;
+    // data/mv.json, data/works.json は { "items": [...] } という形式になっています
+    mv = mvData.items || [];
+    otherWorks = worksData.items || [];
     mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
   }catch(err){
     console.error('コンテンツデータ(mv.json / works.json)の読み込みに失敗しました', err);

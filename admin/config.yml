@@ -40,7 +40,7 @@ collections:
                 required: false
                 modes: ["rich_text"]
                 buttons: ["bold", "heading-two", "heading-three", "link"]
-                editor_components: ["single-image", "image", "large-text", "small-text", "pink-text"]
+                editor_components: ["single-image-mv", "image-mv", "large-text", "small-text", "pink-text"]
 
   # ===== WORKS(video / music / design / others) =====
   - name: "works"
@@ -66,6 +66,6 @@ collections:
                 required: false
                 modes: ["rich_text"]
                 buttons: ["bold", "heading-two", "heading-three", "link"]
-                editor_components: ["single-image", "image", "large-text", "small-text", "pink-text"]
+                editor_components: ["single-image-works", "image-works", "large-text", "small-text", "pink-text"]
               - { label: "カテゴリ", name: "category", widget: "string", hint: "video / music / design / others のいずれか" }
               - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }

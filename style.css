@@ -174,13 +174,13 @@ button{ font-family: inherit; }
 }
 /* 本文の文字サイズを少し大きく、色は黒に（アーティスト名は上のdetail-artistで灰色のまま維持） */
 .view__desc p:not(.detail-artist){
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.9;
   color: var(--black);
 }
 /* 本文中のリンクは水色・下線で表示 */
 .view__desc a{
-  color: #6ec3ff;
+  color: #4fb0ef;
   text-decoration: underline;
   word-break: break-all;
 }
@@ -251,7 +251,7 @@ button{ font-family: inherit; }
   font-size: 0.8em;
 }
 .view__desc .text-pink{
-  color: #F58F98;
+  color: #EE7C88;
 }
 
 /* =====================================================
@@ -387,7 +387,7 @@ button{ font-family: inherit; }
   color: var(--gray);
 }
 .hero-links a{
-  color: #6ec3ff;
+  color: #4fb0ef;
   text-decoration: none;
   transition: opacity .2s var(--ease);
 }

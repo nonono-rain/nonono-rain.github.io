@@ -8,5 +8,36 @@
 <body>
   <!-- Decap CMS本体を読み込みます。ここは基本的に変更不要です -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+  <!-- 本文エディタに「文字を大きく」「文字を小さく」「ピンク文字」ボタンを追加します -->
+  <script>
+    CMS.registerEditorComponent({
+      id: 'large-text',
+      label: '文字を大きく',
+      fields: [{ name: 'body', label: '文字', widget: 'string' }],
+      pattern: /^\{large\}([\s\S]*?)\{\/large\}$/,
+      fromBlock: match => ({ body: match[1] }),
+      toBlock: data => `{large}${data.body}{/large}`,
+      toPreview: data => `<span style="font-size:1.35em;">${data.body}</span>`,
+    });
+    CMS.registerEditorComponent({
+      id: 'small-text',
+      label: '文字を小さく',
+      fields: [{ name: 'body', label: '文字', widget: 'string' }],
+      pattern: /^\{small\}([\s\S]*?)\{\/small\}$/,
+      fromBlock: match => ({ body: match[1] }),
+      toBlock: data => `{small}${data.body}{/small}`,
+      toPreview: data => `<span style="font-size:0.8em;">${data.body}</span>`,
+    });
+    CMS.registerEditorComponent({
+      id: 'pink-text',
+      label: 'ピンク文字',
+      fields: [{ name: 'body', label: '文字', widget: 'string' }],
+      pattern: /^\{pink\}([\s\S]*?)\{\/pink\}$/,
+      fromBlock: match => ({ body: match[1] }),
+      toBlock: data => `{pink}${data.body}{/pink}`,
+      toPreview: data => `<span style="color:#F8ABA6;">${data.body}</span>`,
+    });
+  </script>
 </body>
 </html>

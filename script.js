@@ -489,6 +489,7 @@ function openOriginalDetail(id){
   const bodyHtml = w.body ? renderMarkdown(w.body) : '';
   const originalBodyEl = document.getElementById('originalDetailBody');
   originalBodyEl.innerHTML = `<p class="detail-artist">${w.artist || ''}</p>${bodyHtml}`;
+  groupConsecutiveImages(originalBodyEl);
   enhanceTweetEmbeds(originalBodyEl);
 
   switchPanel('original-detail', true);
@@ -668,6 +669,7 @@ function openWorkDetail(id){
   document.getElementById('workDetailTitle').textContent = w.title;
   const workBodyEl = document.getElementById('workDetailBody');
   workBodyEl.innerHTML = renderMarkdown(w.detail || w.desc);
+  groupConsecutiveImages(workBodyEl);
   enhanceTweetEmbeds(workBodyEl);
 
   switchPanel('work-detail', true);
@@ -924,6 +926,38 @@ function renderMarkdown(text){
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
   return `<p>${escaped.replace(/\n/g, '<br>')}</p>`;
+}
+
+/* =====================================================
+   本文中で連続して挿入された画像を、2枚ずつ横並びにする
+   （画像だけの段落が連続しているときだけグループ化します）
+   ===================================================== */
+function groupConsecutiveImages(container){
+  if(!container) return;
+  const children = Array.from(container.children);
+  let i = 0;
+  const isImageOnlyParagraph = el =>
+    el && el.tagName === 'P' && el.children.length === 1 && el.children[0].tagName === 'IMG';
+
+  while(i < children.length){
+    if(isImageOnlyParagraph(children[i])){
+      const group = [children[i]];
+      let j = i + 1;
+      while(j < children.length && isImageOnlyParagraph(children[j])){
+        group.push(children[j]);
+        j++;
+      }
+      if(group.length > 1){
+        const wrapper = document.createElement('div');
+        wrapper.className = 'img-grid';
+        group[0].parentNode.insertBefore(wrapper, group[0]);
+        group.forEach(p => wrapper.appendChild(p));
+      }
+      i = j;
+    }else{
+      i++;
+    }
+  }
 }
 
 /* =====================================================

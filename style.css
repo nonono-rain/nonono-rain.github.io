@@ -194,17 +194,17 @@ button{ font-family: inherit; }
   line-height: 1.4;
   color: var(--black);
 }
-/* 画像1枚だけの行は、2枚並べて置けるように幅を半分にする（3枚目以降は自動で次の段に折り返します） */
-.view__desc p:has(> img:only-child){
-  display: inline-block;
-  width: calc(50% - 6px);
-  vertical-align: top;
-  margin: 0 12px 12px 0;
+/* 画像を連続して挿入すると、JS側(groupConsecutiveImages)が2枚ずつ .img-grid で囲みます */
+.view__desc .img-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 12px 0;
 }
-.view__desc p:has(> img:only-child):nth-of-type(2n){
-  margin-right: 0;
+.view__desc .img-grid p{
+  margin: 0;
 }
-.view__desc p:has(> img:only-child) img{
+.view__desc .img-grid img{
   width: 100%;
   height: auto;
   display: block;
@@ -216,7 +216,7 @@ button{ font-family: inherit; }
 }
 /* 本文中で {large}...{/large} {small}...{/small} {pink}...{/pink} と書いた部分の見た目 */
 .view__desc .text-lg{
-  font-size: 1.35em;
+  font-size: 2.7em;
 }
 .view__desc .text-sm{
   font-size: 0.8em;

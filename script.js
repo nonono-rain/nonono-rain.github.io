@@ -487,8 +487,9 @@ function openOriginalDetail(id){
   document.getElementById('originalDetailTitle').textContent = w.title;
   // アーティスト名は今まで通り表示しつつ、body（Markdown本文）があればその下に表示します
   const bodyHtml = w.body ? renderMarkdown(w.body) : '';
-  document.getElementById('originalDetailBody').innerHTML =
-    `<p class="detail-artist">${w.artist || ''}</p>${bodyHtml}`;
+  const originalBodyEl = document.getElementById('originalDetailBody');
+  originalBodyEl.innerHTML = `<p class="detail-artist">${w.artist || ''}</p>${bodyHtml}`;
+  enhanceTweetEmbeds(originalBodyEl);
 
   switchPanel('original-detail', true);
 }
@@ -665,7 +666,9 @@ function openWorkDetail(id){
   }
 
   document.getElementById('workDetailTitle').textContent = w.title;
-  document.getElementById('workDetailBody').innerHTML = renderMarkdown(w.detail || w.desc);
+  const workBodyEl = document.getElementById('workDetailBody');
+  workBodyEl.innerHTML = renderMarkdown(w.detail || w.desc);
+  enhanceTweetEmbeds(workBodyEl);
 
   switchPanel('work-detail', true);
 }
@@ -908,6 +911,32 @@ function renderMarkdown(text){
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
   return `<p>${escaped.replace(/\n/g, '<br>')}</p>`;
+}
+
+/* =====================================================
+   X(旧Twitter)の投稿リンクを埋め込みカードに変換する
+   ・本文中で、Xの投稿URLだけが単独で書かれている行が対象です
+   ・（例: 文章の途中に貼ったリンクはそのままリンクとして表示されます）
+   ===================================================== */
+function enhanceTweetEmbeds(container){
+  if(!container) return;
+  const tweetUrlPattern = /^https?:\/\/(twitter\.com|x\.com)\/[^\/]+\/status\/\d+/i;
+  const paragraphs = container.querySelectorAll('p');
+  paragraphs.forEach(p => {
+    const onlyChildLink = p.children.length === 1 && p.children[0].tagName === 'A' && p.textContent.trim() === p.children[0].textContent.trim();
+    if(!onlyChildLink) return;
+    const href = p.children[0].getAttribute('href') || '';
+    if(!tweetUrlPattern.test(href)) return;
+    const blockquote = document.createElement('blockquote');
+    blockquote.className = 'twitter-tweet';
+    const a = document.createElement('a');
+    a.href = href;
+    blockquote.appendChild(a);
+    p.replaceWith(blockquote);
+  });
+  if(window.twttr && window.twttr.widgets && typeof window.twttr.widgets.load === 'function'){
+    window.twttr.widgets.load(container);
+  }
 }
 
 /* =====================================================

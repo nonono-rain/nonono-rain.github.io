@@ -166,6 +166,51 @@ button{ font-family: inherit; }
   color: var(--gray);
   max-width: 440px;
 }
+/* ===== Decap CMSで編集する本文まわりのスタイル ===== */
+/* アーティスト名と本文の間隔 */
+.detail-artist{
+  margin-bottom: 24px;
+}
+/* 本文の文字サイズを少し大きく */
+.view__desc p{
+  font-size: 15px;
+  line-height: 1.9;
+}
+/* 本文中のリンクは水色・下線で表示 */
+.view__desc a{
+  color: #6ec3ff;
+  text-decoration: underline;
+  word-break: break-all;
+}
+.view__desc a:hover{
+  opacity: .8;
+}
+/* 見出し */
+.view__desc h2, .view__desc h3{
+  margin-top: 28px;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+/* 画像1枚だけの行は、2枚並べて置けるように幅を半分にする（3枚目以降は自動で次の段に折り返します） */
+.view__desc p:has(> img:only-child){
+  display: inline-block;
+  width: calc(50% - 6px);
+  vertical-align: top;
+  margin: 0 12px 12px 0;
+}
+.view__desc p:has(> img:only-child):nth-of-type(2n){
+  margin-right: 0;
+}
+.view__desc p:has(> img:only-child) img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+/* Xの投稿を埋め込んだときの見た目調整 */
+.view__desc .twitter-tweet{
+  margin: 20px 0;
+}
 
 /* =====================================================
    MOBILE TOP BAR + オーバーレイメニュー

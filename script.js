@@ -1067,7 +1067,7 @@ function enableImageZoom(container){
 function updateBottomBackVisibility(hasContent, backBtnId){
   const btn = document.getElementById(backBtnId);
   if(!btn) return;
-  btn.style.display = hasContent ? '' : 'none';
+  btn.style.display = hasContent ? 'inline-block' : 'none';
 }
 
 /* =====================================================

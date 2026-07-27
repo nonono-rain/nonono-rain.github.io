@@ -38,35 +38,31 @@
       toBlock: data => `{pink}${data.body}{/pink}`,
       toPreview: data => `<span style="color:#F58F98;">${data.body}</span>`,
     });
-    // Image(大)・Image(小)を「original用」「works用」で分け、アップロード先フォルダも分ける
-    function makeImageComponents(prefix, folder, label){
-      CMS.registerEditorComponent({
-        id: `single-image-${prefix}`,
-        label: `Image(大)${label}`,
-        fields: [
-          { name: 'src', label: '画像', widget: 'image', media_folder: folder, public_folder: '/' + folder },
-          { name: 'text', label: '説明書き', widget: 'string', required: false },
-        ],
-        pattern: /^\{fullimg src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
-        fromBlock: match => ({ src: match[1], text: match[2] || '' }),
-        toBlock: data => `{fullimg src="${data.src || ''}"${data.text ? ` text="${data.text}"` : ''}}`,
-        toPreview: data => `<img src="${data.src}" style="width:100%;" />${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
-      });
-      CMS.registerEditorComponent({
-        id: `image-${prefix}`,
-        label: `Image(小)${label}`,
-        fields: [
-          { name: 'src', label: '画像', widget: 'image', media_folder: folder, public_folder: '/' + folder },
-          { name: 'text', label: '説明書き', widget: 'string', required: false },
-        ],
-        pattern: /^\{img src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
-        fromBlock: match => ({ src: match[1], text: match[2] || '' }),
-        toBlock: data => `{img src="${data.src || ''}"${data.text ? ` text="${data.text}"` : ''}}`,
-        toPreview: data => `<img src="${data.src}" style="max-width:100%;" />${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
-      });
-    }
-    makeImageComponents('mv', 'assets/uploads/original', '');
-    makeImageComponents('works', 'assets/uploads/works', '');
+    // Image(大)・Image(小)（アップロード先は今まで通りassets/uploadsに統一）
+    CMS.registerEditorComponent({
+      id: 'single-image',
+      label: 'Image(大)',
+      fields: [
+        { name: 'src', label: '画像', widget: 'image' },
+        { name: 'text', label: '説明書き', widget: 'string', required: false },
+      ],
+      pattern: /^\{fullimg src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
+      fromBlock: match => ({ src: match[1], text: match[2] || '' }),
+      toBlock: data => `{fullimg src="${data.src || ''}"${data.text ? ` text="${data.text}"` : ''}}`,
+      toPreview: data => `<img src="${data.src}" style="width:100%;" />${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
+    });
+    CMS.registerEditorComponent({
+      id: 'image',
+      label: 'Image(小)',
+      fields: [
+        { name: 'src', label: '画像', widget: 'image' },
+        { name: 'text', label: '説明書き', widget: 'string', required: false },
+      ],
+      pattern: /^\{img src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
+      fromBlock: match => ({ src: match[1], text: match[2] || '' }),
+      toBlock: data => `{img src="${data.src || ''}"${data.text ? ` text="${data.text}"` : ''}}`,
+      toPreview: data => `<img src="${data.src}" style="max-width:100%;" />${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
+    });
   </script>
 </body>
 </html>

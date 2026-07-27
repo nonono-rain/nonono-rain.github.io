@@ -36,7 +36,7 @@
       pattern: /^\{pink\}([\s\S]*?)\{\/pink\}$/,
       fromBlock: match => ({ body: match[1] }),
       toBlock: data => `{pink}${data.body}{/pink}`,
-      toPreview: data => `<span style="color:#F58F98;">${data.body}</span>`,
+      toPreview: data => `<span style="color:#EE7C88;">${data.body}</span>`,
     });
     // Image(大)・Image(小)（アップロード先は今まで通りassets/uploadsに統一）
     CMS.registerEditorComponent({

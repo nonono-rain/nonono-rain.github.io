@@ -39,8 +39,8 @@ collections:
                 widget: "markdown"
                 required: false
                 modes: ["rich_text"]
-                buttons: ["bold", "heading-two", "heading-three", "link", "image"]
-                editor_components: []
+                buttons: ["bold", "heading-two", "heading-three", "link"]
+                editor_components: ["image"]
 
   # ===== WORKS(video / music / design / others) =====
   - name: "works"
@@ -65,7 +65,7 @@ collections:
                 widget: "markdown"
                 required: false
                 modes: ["rich_text"]
-                buttons: ["bold", "heading-two", "heading-three", "link", "image"]
-                editor_components: []
+                buttons: ["bold", "heading-two", "heading-three", "link"]
+                editor_components: ["image"]
               - { label: "カテゴリ", name: "category", widget: "string", hint: "video / music / design / others のいずれか" }
               - { label: "日付", name: "date", widget: "date", format: "YYYY-MM-DD" }

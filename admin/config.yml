@@ -84,8 +84,8 @@ collections:
             summary: "{{title}}"
             fields:
               - { label: "タイトル", name: "title", widget: "string" }
-              - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
               - { label: "ひとこと説明(一覧用)", name: "excerpt", widget: "string" }
+              - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
               - label: "本文(詳細ページに表示)"
                 name: "body"
                 widget: "markdown"

@@ -170,9 +170,10 @@ button{ font-family: inherit; }
 /* アーティスト名と本文の間隔 */
 .detail-artist{
   margin-bottom: 24px;
+  color: var(--gray);
 }
-/* 本文の文字サイズを少し大きく、色は黒に */
-.view__desc p{
+/* 本文の文字サイズを少し大きく、色は黒に（アーティスト名は上のdetail-artistで灰色のまま維持） */
+.view__desc p:not(.detail-artist){
   font-size: 15px;
   line-height: 1.9;
   color: var(--black);
@@ -191,6 +192,7 @@ button{ font-family: inherit; }
   margin-top: 28px;
   margin-bottom: 12px;
   line-height: 1.4;
+  color: var(--black);
 }
 /* 画像1枚だけの行は、2枚並べて置けるように幅を半分にする（3枚目以降は自動で次の段に折り返します） */
 .view__desc p:has(> img:only-child){

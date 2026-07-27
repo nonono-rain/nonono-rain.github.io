@@ -1,0 +1,71 @@
+backend:
+  name: github
+  repo: nonoshiino/nonoshiino.github.io   # ご自身のリポジトリ名に合わせて変更してください
+  branch: main
+  # base_url と auth_endpoint は、次のステップ(認証用Workerの設定)で使う値に置き換えます
+  base_url: https://REPLACE_WITH_WORKER_URL
+  auth_endpoint: auth
+
+# 画像をアップロードしたときの保存先フォルダと、サイト上での参照パス
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# 管理画面の言語を日本語にする
+locale: "ja"
+
+collections:
+
+  # ===== ORIGINAL - MV =====
+  - name: "mv"
+    label: "Original / MV"
+    files:
+      - name: "mv_list"
+        label: "MV一覧"
+        file: "data/mv.json"
+        fields:
+          - label: "MV項目"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "ID(既存のものは変更しないでください)", name: "id", widget: "string" }
+              - { label: "タイトル", name: "title", widget: "string" }
+              - { label: "アーティスト", name: "artist", widget: "string" }
+              - { label: "YouTube ID", name: "youtubeId", widget: "string", required: false, hint: "動画URLの v= のあとの11文字" }
+              - { label: "カテゴリ", name: "category", widget: "string", default: "mv" }
+              - { label: "日付", name: "date", widget: "date", format: "YYYY-MM-DD" }
+              - label: "本文(詳細ページに表示)"
+                name: "body"
+                widget: "markdown"
+                required: false
+                modes: ["rich_text"]
+                buttons: ["bold", "heading-two", "heading-three", "link", "image"]
+                editor_components: []
+
+  # ===== WORKS(video / music / design / others) =====
+  - name: "works"
+    label: "Works"
+    files:
+      - name: "works_list"
+        label: "作品一覧"
+        file: "data/works.json"
+        fields:
+          - label: "作品項目"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "ID(既存のものは変更しないでください)", name: "id", widget: "string" }
+              - { label: "タイトル", name: "title", widget: "string" }
+              - { label: "サムネイル画像のパス", name: "thumbnail", widget: "string", required: false }
+              - { label: "YouTube ID", name: "youtubeId", widget: "string", required: false }
+              - { label: "ひとこと説明(一覧用)", name: "desc", widget: "string" }
+              - label: "本文(詳細ページに表示)"
+                name: "detail"
+                widget: "markdown"
+                required: false
+                modes: ["rich_text"]
+                buttons: ["bold", "heading-two", "heading-three", "link", "image"]
+                editor_components: []
+              - { label: "カテゴリ", name: "category", widget: "string", hint: "video / music / design / others のいずれか" }
+              - { label: "日付", name: "date", widget: "date", format: "YYYY-MM-DD" }

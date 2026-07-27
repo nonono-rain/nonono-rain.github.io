@@ -69,3 +69,27 @@ collections:
                 modes: ["rich_text"]
                 buttons: ["bold", "heading-two", "heading-three", "link"]
                 editor_components: ["single-image", "image", "large-text", "small-text", "pink-text"]
+
+  # ===== BLOG =====
+  - name: "blog"
+    label: "Blog"
+    files:
+      - name: "blog_list"
+        label: "ブログ一覧"
+        file: "data/blog.json"
+        fields:
+          - label: "記事"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "タイトル", name: "title", widget: "string" }
+              - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+              - { label: "ひとこと説明(一覧用)", name: "excerpt", widget: "string" }
+              - label: "本文(詳細ページに表示)"
+                name: "body"
+                widget: "markdown"
+                required: false
+                modes: ["rich_text"]
+                buttons: ["bold", "heading-two", "heading-three", "link"]
+                editor_components: ["single-image", "image", "large-text", "small-text", "pink-text"]

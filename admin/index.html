@@ -43,7 +43,7 @@
       label: 'Image(大)',
       fields: [
         { name: 'src', label: '画像', widget: 'image' },
-        { name: 'text', label: '説明書き(任意)', widget: 'string', required: false },
+        { name: 'text', label: '説明書き', widget: 'string', required: false },
       ],
       pattern: /^\{fullimg src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
       fromBlock: match => ({ src: match[1], text: match[2] || '' }),
@@ -56,7 +56,7 @@
       label: 'Image(小)',
       fields: [
         { name: 'src', label: '画像', widget: 'image' },
-        { name: 'text', label: '説明書き(任意)', widget: 'string', required: false },
+        { name: 'text', label: '説明書き', widget: 'string', required: false },
       ],
       pattern: /^\{img src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
       fromBlock: match => ({ src: match[1], text: match[2] || '' }),

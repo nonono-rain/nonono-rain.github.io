@@ -29,10 +29,10 @@ collections:
             summary: "{{title}}"
             fields:
               - { label: "ID(既存のものは変更しないでください)", name: "id", widget: "string" }
+              - { label: "カテゴリ", name: "category", widget: "string", default: "mv" }
               - { label: "タイトル", name: "title", widget: "string" }
               - { label: "アーティスト", name: "artist", widget: "string" }
               - { label: "YouTube ID", name: "youtubeId", widget: "string", required: false, hint: "動画URLの v= のあとの11文字" }
-              - { label: "カテゴリ", name: "category", widget: "string", default: "mv" }
               - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
               - label: "本文(詳細ページに表示)"
                 name: "body"
@@ -56,10 +56,12 @@ collections:
             summary: "{{title}}"
             fields:
               - { label: "ID(既存のものは変更しないでください)", name: "id", widget: "string" }
+              - { label: "カテゴリ", name: "category", widget: "string", hint: "video / music / design / others のいずれか" }
               - { label: "タイトル", name: "title", widget: "string" }
-              - { label: "サムネイル画像のパス", name: "thumbnail", widget: "string", required: false }
-              - { label: "YouTube ID", name: "youtubeId", widget: "string", required: false }
               - { label: "ひとこと説明(一覧用)", name: "desc", widget: "string" }
+              - { label: "YouTube ID", name: "youtubeId", widget: "string", required: false }
+              - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+              - { label: "サムネイル画像のパス", name: "thumbnail", widget: "string", required: false }
               - label: "本文(詳細ページに表示)"
                 name: "detail"
                 widget: "markdown"
@@ -67,5 +69,3 @@ collections:
                 modes: ["rich_text"]
                 buttons: ["bold", "heading-two", "heading-three", "link"]
                 editor_components: ["single-image", "image", "large-text", "small-text", "pink-text"]
-              - { label: "カテゴリ", name: "category", widget: "string", hint: "video / music / design / others のいずれか" }
-              - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }

@@ -315,13 +315,8 @@ let otherWorks = [];
 
 
 // ブログ記事
-// excerpt: 一覧に出す短い説明（ひとこと）
-// body: 詳細ページに出す本文（省略した場合はexcerptがそのまま使われます）
-const blogPosts = [
-  { date: "2026-06-20", title: "新曲MVの制作について", excerpt: "今回の制作で工夫したポイントをまとめました。", body: "今回の制作で工夫したポイントをまとめました。" },
-  { date: "2026-05-02", title: "使用しているソフトと機材", excerpt: "普段の制作環境を紹介します。", body: "普段の制作環境を紹介します。" },
-  { date: "2026-03-15", title: "自己紹介", excerpt: "はじめまして、制作を始めたきっかけについて。", body: "はじめまして、制作を始めたきっかけについて。" },
-];
+// blogPostsのデータは data/blog.json から読み込みます（下の loadContentData() を参照）
+let blogPosts = [];
 
 // 「椎野が最近聴いている曲！」ページ（アイコンをクリックすると表示）。ちょうど4曲になるようにしてください
 const listeningSongs = [
@@ -466,7 +461,13 @@ function renderBlog(containerId){
 function openBlogDetail(post){
   document.getElementById('blogDetailDate').textContent = formatDate(post.date);
   document.getElementById('blogDetailTitle').textContent = post.title;
-  document.getElementById('blogDetailBody').textContent = post.body || post.excerpt;
+  const blogBodyEl = document.getElementById('blogDetailBody');
+  blogBodyEl.innerHTML = renderMarkdown(post.body || post.excerpt);
+  groupConsecutiveImages(blogBodyEl);
+  enableImageZoom(blogBodyEl);
+  enhanceYoutubeEmbeds(blogBodyEl);
+  enhanceTweetEmbeds(blogBodyEl);
+  updateBottomBackVisibility('view-blog-detail', 'blogDetailBackBottom');
 
   switchPanel('blog-detail', true);
 }
@@ -493,6 +494,7 @@ function openOriginalDetail(id){
   enableImageZoom(originalBodyEl);
   enhanceYoutubeEmbeds(originalBodyEl);
   enhanceTweetEmbeds(originalBodyEl);
+  updateBottomBackVisibility('view-original-detail', 'originalDetailBackBottom');
 
   switchPanel('original-detail', true);
 }
@@ -677,6 +679,7 @@ function openWorkDetail(id){
   enableImageZoom(workBodyEl);
   enhanceYoutubeEmbeds(workBodyEl);
   enhanceTweetEmbeds(workBodyEl);
+  updateBottomBackVisibility('view-work-detail', 'workDetailBackBottom');
 
   switchPanel('work-detail', true);
 }
@@ -898,16 +901,19 @@ if(mobileMenuTrigger){
    ===================================================== */
 async function loadContentData(){
   try{
-    const [mvData, worksData] = await Promise.all([
+    const [mvData, worksData, blogData] = await Promise.all([
       fetch('data/mv.json').then(res => res.json()),
-      fetch('data/works.json').then(res => res.json())
+      fetch('data/works.json').then(res => res.json()),
+      fetch('data/blog.json').then(res => res.json())
     ]);
-    // data/mv.json, data/works.json は { "items": [...] } という形式になっています
+    // data/mv.json, data/works.json, data/blog.json は { "items": [...] } という形式になっています
     mv = mvData.items || [];
     otherWorks = worksData.items || [];
+    blogPosts = blogData.items || [];
     mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
+    renderBlog('blogList'); // ブログのデータが揃ってから一覧を描画する
   }catch(err){
-    console.error('コンテンツデータ(mv.json / works.json)の読み込みに失敗しました', err);
+    console.error('コンテンツデータ(mv.json / works.json / blog.json)の読み込みに失敗しました', err);
   }
 }
 
@@ -1056,6 +1062,20 @@ function enableImageZoom(container){
 }
 
 /* =====================================================
+   ページの中身が長いときだけ、一番下にも「← back」を表示する
+   ===================================================== */
+function updateBottomBackVisibility(viewId, backBtnId){
+  const view = document.getElementById(viewId);
+  const btn = document.getElementById(backBtnId);
+  if(!view || !btn) return;
+  requestAnimationFrame(() => {
+    const contentHeight = view.scrollHeight;
+    const visibleHeight = (viewPane ? viewPane.clientHeight : 0) || window.innerHeight;
+    btn.style.display = contentHeight > visibleHeight * 1.2 ? '' : 'none';
+  });
+}
+
+/* =====================================================
    本文中で連続して挿入された画像を、2枚ずつ横並びにする
    （画像だけの段落が連続しているときだけグループ化します）
    ===================================================== */
@@ -1162,7 +1182,6 @@ function enhanceTweetEmbeds(container){
    ===================================================== */
 document.addEventListener('DOMContentLoaded', () => {
   loadContentData();
-  renderBlog('blogList');
   renderListening();
   if(menuToggle) buildMobileNav();
   setupCategoryNav();

@@ -317,7 +317,7 @@ button{ font-family: inherit; }
   z-index: 150;
   display:flex;
   flex-direction:column;
-  padding: 40px 8vw;
+  padding: 16px 8vw 40px;
   gap: 6px;
   overflow-y:auto;
 }
@@ -476,6 +476,12 @@ button{ font-family: inherit; }
   transition: color .2s var(--ease);
 }
 .view__back:hover{ color: var(--black); }
+/* 内容が長いページだけ、JS側で表示する一番下の「← back」 */
+.view__back--bottom{
+  display: none;
+  margin-top: 40px;
+  margin-bottom: 0;
+}
 
 /* =====================================================
    THUMB LIST（ORIGINAL・WORKS共通：サムネイルが縦に並ぶ一覧・枠なし）

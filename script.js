@@ -670,7 +670,9 @@ function openWorkDetail(id){
 
   document.getElementById('workDetailTitle').textContent = w.title;
   const workBodyEl = document.getElementById('workDetailBody');
-  workBodyEl.innerHTML = renderMarkdown(w.detail || w.desc);
+  // 「ひとこと説明」はmvのアーティスト名と同じスタイル(detail-artist)を再利用し、余白も揃える
+  const workBodyHtml = w.detail ? renderMarkdown(w.detail) : '';
+  workBodyEl.innerHTML = `<p class="detail-artist">${w.desc || ''}</p>${workBodyHtml}`;
   groupConsecutiveImages(workBodyEl);
   enableImageZoom(workBodyEl);
   enhanceYoutubeEmbeds(workBodyEl);

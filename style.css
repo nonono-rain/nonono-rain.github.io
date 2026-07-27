@@ -169,7 +169,7 @@ button{ font-family: inherit; }
 /* ===== Decap CMSで編集する本文まわりのスタイル ===== */
 /* アーティスト名と本文の間隔 */
 .detail-artist{
-  margin-bottom: 24px;
+  margin-bottom: 36px;
   color: var(--gray);
 }
 /* 本文の文字サイズを少し大きく、色は黒に（アーティスト名は上のdetail-artistで灰色のまま維持） */
@@ -210,6 +210,16 @@ button{ font-family: inherit; }
   display: block;
   border-radius: 4px;
 }
+/* 「単一Image」で挿入した画像（画面いっぱいに近い大きさで表示） */
+.view__desc .img-full{
+  margin: 20px 0;
+}
+.view__desc .img-full img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
 /* Xの投稿を埋め込んだときの見た目調整 */
 .view__desc .twitter-tweet{
   margin: 20px 0;
@@ -222,7 +232,7 @@ button{ font-family: inherit; }
   font-size: 0.8em;
 }
 .view__desc .text-pink{
-  color: #F8ABA6; /* カーソルの線と同じピンク */
+  color: #F58F98;
 }
 
 /* =====================================================

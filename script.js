@@ -490,6 +490,7 @@ function openOriginalDetail(id){
   const originalBodyEl = document.getElementById('originalDetailBody');
   originalBodyEl.innerHTML = `<p class="detail-artist">${w.artist || ''}</p>${bodyHtml}`;
   groupConsecutiveImages(originalBodyEl);
+  enableImageZoom(originalBodyEl);
   enhanceTweetEmbeds(originalBodyEl);
 
   switchPanel('original-detail', true);
@@ -670,6 +671,7 @@ function openWorkDetail(id){
   const workBodyEl = document.getElementById('workDetailBody');
   workBodyEl.innerHTML = renderMarkdown(w.detail || w.desc);
   groupConsecutiveImages(workBodyEl);
+  enableImageZoom(workBodyEl);
   enhanceTweetEmbeds(workBodyEl);
 
   switchPanel('work-detail', true);
@@ -775,7 +777,13 @@ function switchPanel(panelName, forceTop){
   navListItems.forEach(li => li.classList.toggle('is-active', li.dataset.panel === navGroup));
 
   // TOPを表示中かどうかをbodyに反映する（縦型スマホでのmenuボタン点滅に使う）
-  document.body.classList.toggle('is-viewing-top', panelName === 'top');
+  // 一度クラスを外してから強制的に再描画させ、TOPに戻るたびに必ず点滅が最初から再生されるようにする
+  const menuLabel = document.querySelector('.mobile-bar__menu-label');
+  document.body.classList.remove('is-viewing-top');
+  if(panelName === 'top'){
+    if(menuLabel) void menuLabel.offsetWidth; // 強制再描画（リフロー）
+    document.body.classList.add('is-viewing-top');
+  }
 
   // 「戻る」リンクのときだけ前回のスクロール位置を復元し、それ以外(メニューからの移動)は常に一番上から表示する
   // PC・スマホどちらでも正しい方に反映されるよう、両方に対して設定する
@@ -912,7 +920,8 @@ function applyCustomFormatting(text){
   return text
     .replace(/\{large\}([\s\S]*?)\{\/large\}/g, '<span class="text-lg">$1</span>')
     .replace(/\{small\}([\s\S]*?)\{\/small\}/g, '<span class="text-sm">$1</span>')
-    .replace(/\{pink\}([\s\S]*?)\{\/pink\}/g, '<span class="text-pink">$1</span>');
+    .replace(/\{pink\}([\s\S]*?)\{\/pink\}/g, '<span class="text-pink">$1</span>')
+    .replace(/\{fullimg\}([\s\S]*?)\{\/fullimg\}/g, (_, url) => `<div class="img-full"><img src="${url.trim()}" alt=""></div>`);
 }
 
 function renderMarkdown(text){
@@ -926,6 +935,115 @@ function renderMarkdown(text){
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
   return `<p>${escaped.replace(/\n/g, '<br>')}</p>`;
+}
+
+/* =====================================================
+   本文中の画像用ライトボックス（クリック/タップで拡大表示、ホイールでズーム）
+   ・designカテゴリのライトボックスと違い、矢印(前へ/次へ)はありません
+   ===================================================== */
+function openBodyImageLightbox(src, alt){
+  const lightbox = document.getElementById('bodyImageLightbox');
+  const img = document.getElementById('bodyImageLightboxImg');
+  if(!lightbox || !img) return;
+  resetBodyLightboxZoom();
+  img.src = src;
+  img.alt = alt || '';
+  lightbox.classList.add('is-open');
+  lightbox.setAttribute('aria-hidden', 'false');
+}
+
+function closeBodyImageLightbox(){
+  const lightbox = document.getElementById('bodyImageLightbox');
+  if(!lightbox) return;
+  lightbox.classList.remove('is-open');
+  lightbox.setAttribute('aria-hidden', 'true');
+  resetBodyLightboxZoom();
+}
+
+document.getElementById('bodyImageLightboxClose')?.addEventListener('click', closeBodyImageLightbox);
+document.getElementById('bodyImageLightboxBackdrop')?.addEventListener('click', closeBodyImageLightbox);
+document.addEventListener('keydown', (e) => {
+  const lightbox = document.getElementById('bodyImageLightbox');
+  if(!lightbox || !lightbox.classList.contains('is-open')) return;
+  if(e.key === 'Escape') closeBodyImageLightbox();
+});
+
+const BODY_LIGHTBOX_MIN_ZOOM = 1;
+const BODY_LIGHTBOX_MAX_ZOOM = 4;
+const BODY_LIGHTBOX_ZOOM_STEP = 0.25;
+let bodyLightboxZoomScale = 1;
+let bodyLightboxPanX = 0;
+let bodyLightboxPanY = 0;
+
+function applyBodyLightboxTransform(){
+  const img = document.getElementById('bodyImageLightboxImg');
+  if(img) img.style.transform = `translate(${bodyLightboxPanX}px, ${bodyLightboxPanY}px) scale(${bodyLightboxZoomScale})`;
+}
+
+function resetBodyLightboxZoom(){
+  bodyLightboxZoomScale = 1;
+  bodyLightboxPanX = 0;
+  bodyLightboxPanY = 0;
+  applyBodyLightboxTransform();
+  const wrap = document.getElementById('bodyImageLightboxImgWrap');
+  if(wrap) wrap.style.cursor = 'zoom-in';
+}
+
+(function initBodyLightboxZoom(){
+  const wrap = document.getElementById('bodyImageLightboxImgWrap');
+  const img = document.getElementById('bodyImageLightboxImg');
+  if(!wrap || !img) return;
+
+  img.style.transformOrigin = 'center center';
+
+  wrap.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    bodyLightboxZoomScale += e.deltaY < 0 ? BODY_LIGHTBOX_ZOOM_STEP : -BODY_LIGHTBOX_ZOOM_STEP;
+    bodyLightboxZoomScale = Math.max(BODY_LIGHTBOX_MIN_ZOOM, Math.min(BODY_LIGHTBOX_MAX_ZOOM, bodyLightboxZoomScale));
+    if(bodyLightboxZoomScale <= BODY_LIGHTBOX_MIN_ZOOM){
+      bodyLightboxPanX = 0;
+      bodyLightboxPanY = 0;
+    }
+    applyBodyLightboxTransform();
+    wrap.style.cursor = bodyLightboxZoomScale > BODY_LIGHTBOX_MIN_ZOOM ? 'grab' : 'zoom-in';
+  }, { passive: false });
+
+  let isDragging = false;
+  let dragStartX = 0, dragStartY = 0;
+  let panStartX = 0, panStartY = 0;
+
+  wrap.addEventListener('mousedown', (e) => {
+    if(bodyLightboxZoomScale <= BODY_LIGHTBOX_MIN_ZOOM) return;
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    panStartX = bodyLightboxPanX;
+    panStartY = bodyLightboxPanY;
+    wrap.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if(!isDragging) return;
+    bodyLightboxPanX = panStartX + (e.clientX - dragStartX);
+    bodyLightboxPanY = panStartY + (e.clientY - dragStartY);
+    applyBodyLightboxTransform();
+  });
+
+  window.addEventListener('mouseup', () => {
+    if(!isDragging) return;
+    isDragging = false;
+    wrap.style.cursor = bodyLightboxZoomScale > BODY_LIGHTBOX_MIN_ZOOM ? 'grab' : 'zoom-in';
+  });
+})();
+
+// 本文中の画像すべてに、クリック/タップで拡大表示する機能を付ける
+function enableImageZoom(container){
+  if(!container) return;
+  container.querySelectorAll('img').forEach(img => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => openBodyImageLightbox(img.currentSrc || img.src, img.alt));
+  });
 }
 
 /* =====================================================

@@ -211,6 +211,17 @@
   <button class="design-lightbox__arrow design-lightbox__arrow--next" id="lightboxNext" aria-label="次の画像">&gt;</button>
 </div>
 
+<!-- ===== 本文中の画像用ライトボックス（矢印なし・ホイールでズーム） ===== -->
+<div class="design-lightbox" id="bodyImageLightbox" aria-hidden="true">
+  <div class="design-lightbox__backdrop" id="bodyImageLightboxBackdrop"></div>
+  <button class="design-lightbox__close" id="bodyImageLightboxClose" aria-label="閉じる">&times;</button>
+  <div class="design-lightbox__box">
+    <div class="design-lightbox__img-wrap" id="bodyImageLightboxImgWrap">
+      <img class="design-lightbox__img" id="bodyImageLightboxImg" src="" alt="">
+    </div>
+  </div>
+</div>
+
 <canvas id="cursorTrail"></canvas>
 
 <script src="script.js"></script>

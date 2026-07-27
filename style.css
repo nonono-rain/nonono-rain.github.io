@@ -325,12 +325,18 @@ button{ font-family: inherit; }
 .listening-row{
   display:flex;
   gap: 20px;
+  align-items: flex-start; /* 基本は上端に揃える（2番目のサムネイルはこのまま） */
 }
 .listening-item{
   cursor:pointer;
   flex: 1;
   min-width: 0; /* 中身のサイズで勝手に広がり、正方形がズレるのを防ぐ */
 }
+/* 2番目・3番目のサムネイルだけ少し小さくする。
+   同じ段の中でぴったり隣り合うよう、余白ではなく比率(flex)で幅を分け合う */
+.listening-item--small{ flex: 0.6; }
+/* 3番目(下段の左)だけは、隣の4番目(大)の下端に揃える */
+.listening-row:nth-child(2) .listening-item--small{ align-self: flex-end; }
 .listening-item__thumb{
   width:100%;
   aspect-ratio: 1 / 1; /* 4曲とも常に正方形 */
@@ -623,15 +629,6 @@ a:focus-visible, button:focus-visible{
   #view-top.is-active{ display:block; padding-top: 80px; }
   .mobile-bar{ display:flex; }
   .blog-item{ grid-template-columns: 1fr; gap:6px; }
-  .listening-row{
-    gap: 20px; /* 中央付近(左上・右下の頂点)が窮屈にならないよう、余白自体を少し広げる */
-    align-items: flex-start; /* 基本は上端に揃える（2番目のサムネイルはこのまま） */
-  }
-  /* 2番目・3番目のサムネイルだけ少し小さくする（横スクロールなしで4つとも収まるように）。
-     同じ段の中でぴったり隣り合うよう、余白ではなく比率(flex)で幅を分け合う */
-  .listening-item--small{ flex: 0.6; }
-  /* 3番目(下段の左)だけは、隣の4番目(大)の下端に揃える */
-  .listening-row:nth-child(2) .listening-item--small{ align-self: flex-end; }
   .view__inner{ margin: 0 auto; } /* コンテンツが画面幅より狭いときは中央に揃える（左寄りにならないように） */
 
   /* ライトボックス：スマホでは矢印・閉じるボタンの余白を詰めて画像を広く見せる */

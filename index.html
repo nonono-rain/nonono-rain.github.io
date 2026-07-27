@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body class="is-viewing-top">
 
@@ -116,7 +117,7 @@
         <a href="#" data-panel="original-category" class="view__back">← back</a>
         <div class="detail-thumb" id="originalDetailMedia"><!-- JSがiframeを挿入 --></div>
         <h2 class="view__title detail-title" id="originalDetailTitle"></h2>
-        <p class="view__desc" id="originalDetailBody"></p>
+        <div class="view__desc" id="originalDetailBody"></div>
       </div>
     </section>
 
@@ -137,7 +138,7 @@
         <a href="#" data-panel="works-category" class="view__back">← back</a>
         <div class="detail-thumb" id="workDetailMedia"><!-- JSが画像またはiframeを挿入 --></div>
         <h2 class="view__title detail-title" id="workDetailTitle"></h2>
-        <p class="view__desc" id="workDetailBody"></p>
+        <div class="view__desc" id="workDetailBody"></div>
       </div>
     </section>
 

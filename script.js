@@ -22,107 +22,9 @@
 
 
 
-const mv = [
-  { id: "mv-01", 
-   title: "ブラックボックス！", 
-   artist: "重音テト、ナースロボ＿タイプＴ", 
-   youtubeId: "UFaKNqnwgHg", 
-   category: "mv",       
-   date: "2024-03-22" 
-  },
-  { id: "mv-02", 
-   title: "ロスト・デリュージョン - 椎野乃々Remix", 
-   artist: "原曲：Frog96",       
-   youtubeId: "3AKOwXCqfYw", 
-   category: "mv", 
-   date: "2024-08-10" }, 
-  { id: "mv-03", 
-   title: "9月10日", 
-   artist: "カゼヒキ、ナースロボ＿タイプT",          
-   youtubeId: "Dx4NTEzPDbg", 
-   category: "mv", 
-   date: "2024-09-10" 
-  },
-  { id: "mv-04", 
-   title: "まねた命ね",  artist: "裏命",          
-   youtubeId: "C8aVSv_FZGk", 
-   category: "mv",   
-   date: "2024-12-30" 
-  },
-  { id: "mv-05", 
-   title: "転がるくせ", 
-   artist: "ナースロボ＿タイプT、転音セラ",       
-   youtubeId: "p0gfjEGm-Bc", 
-   category: "mv",   
-   date: "2025-01-24" },
-  { id: "mv-06", 
-   title: "rkgk", 
-   artist: "重音テト",       
-   youtubeId: "qsY1Y1h1Z2o", 
-   category: "mv",  
-   date: "2025-02-25" },
-  { id: "mv-07", 
-   title: "生産者ら", 
-   artist: "ナースロボ＿タイプT、花隈千冬",     
-   youtubeId: "2RS8SWt7ZDo", category: "mv",     
-   date: "2025-06-07" },
-  { id: "mv-08", 
-   title: "不こうにしちゃう", 
-   artist: "donor.", 
-   youtubeId: "r-34NclcrAI",
-   category: "mv",      
-   date: "2025-07-02" },
-  { id: "mv-09", 
-   title: "ヘヴンね", 
-   artist: "ネヂェム、ナースロボ＿タイプT",      
-   youtubeId: "WfSoWz0xs-s",
-   category: "mv",
-   date: "2025-07-26" },
-  { id: "mv-10", 
-   title: "にゃ",
-   artist: "重音テト、ナースロボ＿タイプT",        
-   youtubeId: "Kf9osaPyMmA", 
-   category: "mv", 
-   date: "2025-09-06" },
-  { id: "mv-11",
-   title: "mosaique",
-   artist: "カゼヒキ、ナースロボ＿タイプT",       
-   youtubeId: "ioAZ-Yce-Ic",
-   category: "mv",  
-   date: "2025-11-01" },
-  { id: "mv-12",
-   title: "ホワイトスペースにおいで", 
-   artist: "ナースロボ_タイプT、重音テト",    
-   youtubeId: "t05zomb6MEY", 
-   category: "mv",   
-   date: "2025-12-26" },
-  { id: "mv-13", 
-   title: "なりますように！",
-   artist: "70D",     
-   youtubeId: "3T6iq0DYREM", 
-   category: "mv",  
-   date: "2026-01-31" },
-  { id: "mv-14", 
-   title: "放送委員", 
-   artist: "ナースロボ_タイプT",       
-   youtubeId: "38j_-GrNPoU", 
-   category: "mv",  
-   date: "2026-05-03" },
-  { id: "mv-15", 
-   title: "やみまじょがふってきた",
-   artist: "donor.",   
-   youtubeId: "-65alg-fWtY", 
-   category: "mv",    
-   date: "2026-06-20" },
-  {  
-  id: "mv-16", 
-  title: "イガクが→フィギュアになっちゃうヨ Remix♭",
-  artist: "原曲：原口沙輔",     
-  youtubeId: "iil1RAI1XlI", 
-  category: "mv",      
-  date: "2025-08-26" 
-  },
-];
+// mvのデータは data/mv.json から読み込みます（下の loadContentData() を参照）
+// 各項目には body（詳細ページの本文、Markdown形式）が追加されています
+let mv = [];
 
 const releases = [
 
@@ -396,7 +298,9 @@ const originalOthers = [
 
 ];
 
-const mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
+// mv.jsonの読み込みが終わるまでは releases/design/others だけの状態になっています
+// loadContentData() の中で mv.json 読み込み後に組み直されます
+let mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
 
 // MV以外の制作物
 // id: 一意のID(英数字。詳細ビューの表示に使うので他と被らないようにしてください)
@@ -405,158 +309,9 @@ const mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
 // desc: 一覧に出す短い説明（ひとこと）
 // detail: 詳細ビューに出す長めの説明（省略した場合は desc がそのまま使われます）
 // link: 指定すると、サムネイルをクリックしたときに詳細ビューを開く代わりに、このURLへ直接移動します（省略可・新しいタブで開きます）
-const works_video = [
-{
-    id: "video01",
-    title: "新兎わい様 配信OP「カオス☆ニート」",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "rqqlpDPVNk4",
-    desc: "配信用OPアニメーションを制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: "video",
-    date: "2024-02-11"
-  },
-{
-    id: "video02",
-    title: "ミギハヤミ・コハク様 配信OP「放浪者を強くしてあげよう」",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "eXzCiyMD5AU",
-    desc: "配信用OPアニメーションを制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: "video",
-    date: "2024-08-05"
-  },
-{
-    id: "video03",
-    title: "コトノネ - 感情線",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "kN6jMmZXN94",
-    desc: "映像と絵を制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: "video",
-    date: "2025-06-27"
-  },
-{
-    id: "video04",
-    title: "さよならエリクサー - 感情市街記録",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "uP-AofENa_k",
-    desc: "映像を制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: "video",
-    date: "2025-10-15"
-  },
-{
-    id: "video05",
-    title: "熱異常 - 百軒カナリcover",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "z2YZLFyP2NM",
-    desc: "映像と絵を制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: "video",
-    date: "2025-11-20"
-  },
-{
-    id: "video06",
-    title: "メルカリで愛が買える時代になったら - はしメロ",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "KT603xYXNIA",
-    desc: "映像を制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: "video",
-    date: "2025-10-15"
-  },
-{
-    id: "video07",
-    title: "NEO愛桜宣言 - 櫻坂46 佐藤愛桜",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "c1_-qKAA6I4",
-    desc: "MVのモーションデザインを制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: "video",
-    date: "2026-02-26"
-  },
-{
-    id: "video08",
-    title: "あした地球がこなごなになっても - kaza×日あさ寝×桃寝ちのい×N×恋白るな×エリモ・クドリャフカcover",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "k1qvo9tH1QQ",
-    desc: "映像を制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: "video",
-    date: "2026-03-11"
-  },
-{
-    id: "video09",
-    title: "キルミーダーリン - 灰色ねむり×null",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "06K_77uaUNk",
-    desc: "映像を制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: "video",
-    date: "2026-03-28"
-  }
-];
-
-const works_music = [
-{
-    id: "w_music01",
-    title: "VOID - ﾀﾄ",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "LqAWnhfqJCw",
-    desc: "曲と映像を制作しました。",
-    detail: "チャンネル用のオープニングロゴモーションです。短い尺の中でブランドの世界観を伝えられるよう、動きとタイミングを調整しました。",
-    category: ["video", "music"],
-    date: "2026-3-14"
-  },
-
-];
-
-const works_design = [
-{
-    id: "w-design-01",
-    title: "トキワの森「あんしん」Tシャツデザイン(背面)",
-    thumbnail: "assets/works/w-design/あんしんジャケット.png",
-    desc: "ロックバンド「トキワの森」様のTシャツデザイン(背面)を制作しました。",
-    detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
-    category: "design",
-    date: "2025-08-14"
-  },
-{
-    id: "w-design-02",
-    title: "ﾀﾄ「VOID」ジャケットデザイン",
-    thumbnail: "assets/works/w-design/VOIDジャケット.png",
-    desc: "ﾀﾄ様のオリジナル楽曲「VOID」及びそのジャケットデザインを制作しました。",
-    detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
-    category: "design",
-    date: "2026-03-16"
-  },
-{
-    id: "w-design-03",
-    title: "「Who’s the Witch」ジャケットデザイン",
-    thumbnail: "assets/works/w-design/桜羽エマジャケット1.png",
-    desc: "`bootleg‘まのさばコンピ「Who’s the Witch」のジャケットデザインを制作しました。",
-    detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
-    category: "design",
-    date: "2026-06-27"
-  },
-
-];
-
-const works_others = [
-{
-    id: "w-others-01",
-    title: "ラメリィ「メズマライザー」Cover動画サムネイル",
-    thumbnail: "assets/works/motion-01.jpg",
-    youtubeId: "vltGaTpJiC4",
-    desc: "ラメリィ様の「メズマライザー」cover動画のサムネイルを制作しました。",
-    detail: "MVのサムネイルやSNS用ビジュアルを制作しました。キャラクターの表情や色使いにこだわり、楽曲の雰囲気が一目で伝わるようなビジュアルを目指しました。",
-    category: "others",
-    date: "2024-07-06"
-  },
-];
-
-const otherWorks = [...works_video, ...works_music, ...works_design, ...works_others];
+// worksのデータ(video/music/design/others)は data/works.json から読み込みます
+// detail が詳細ページの本文（Markdown形式）として使われます
+let otherWorks = [];
 
 
 // ブログ記事
@@ -730,7 +485,10 @@ function openOriginalDetail(id){
     media.innerHTML = `<img src="${w.thumbnail}" alt="${w.title}" onerror="this.remove()">`;
   }
   document.getElementById('originalDetailTitle').textContent = w.title;
-  document.getElementById('originalDetailBody').textContent = w.artist;
+  // アーティスト名は今まで通り表示しつつ、body（Markdown本文）があればその下に表示します
+  const bodyHtml = w.body ? renderMarkdown(w.body) : '';
+  document.getElementById('originalDetailBody').innerHTML =
+    `<p class="detail-artist">${w.artist || ''}</p>${bodyHtml}`;
 
   switchPanel('original-detail', true);
 }
@@ -907,7 +665,7 @@ function openWorkDetail(id){
   }
 
   document.getElementById('workDetailTitle').textContent = w.title;
-  document.getElementById('workDetailBody').textContent = w.detail || w.desc;
+  document.getElementById('workDetailBody').innerHTML = renderMarkdown(w.detail || w.desc);
 
   switchPanel('work-detail', true);
 }
@@ -1115,9 +873,47 @@ if(mobileMenuTrigger){
 }
 
 /* =====================================================
+   コンテンツデータの読み込み（data/mv.json, data/works.json）
+   ・Decap CMSで編集したデータはこの2つのJSONファイルに保存されます
+   ・読み込みが終わったら mv / otherWorks / mvWorks を組み直します
+   ===================================================== */
+async function loadContentData(){
+  try{
+    const [mvData, worksData] = await Promise.all([
+      fetch('data/mv.json').then(res => res.json()),
+      fetch('data/works.json').then(res => res.json())
+    ]);
+    mv = mvData;
+    otherWorks = worksData;
+    mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
+  }catch(err){
+    console.error('コンテンツデータ(mv.json / works.json)の読み込みに失敗しました', err);
+  }
+}
+
+/* =====================================================
+   Markdown → HTML 変換
+   ・Decap CMSのリッチテキストエディタは本文をMarkdown形式で保存します
+   ・marked.js が読み込めている場合はそれを使い、太字・見出し・リンク・画像などを反映します
+   ・読み込めなかった場合は改行だけ反映する簡易表示にフォールバックします
+   ===================================================== */
+function renderMarkdown(text){
+  if(!text) return '';
+  if(window.marked && typeof window.marked.parse === 'function'){
+    return window.marked.parse(text);
+  }
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  return `<p>${escaped.replace(/\n/g, '<br>')}</p>`;
+}
+
+/* =====================================================
    初期化
    ===================================================== */
 document.addEventListener('DOMContentLoaded', () => {
+  loadContentData();
   renderBlog('blogList');
   renderListening();
   if(menuToggle) buildMobileNav();

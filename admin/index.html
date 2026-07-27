@@ -13,7 +13,7 @@
   <script>
     CMS.registerEditorComponent({
       id: 'large-text',
-      label: '文字を大きく',
+      label: '大文字',
       fields: [{ name: 'body', label: '文字', widget: 'string' }],
       pattern: /^\{large\}([\s\S]*?)\{\/large\}$/,
       fromBlock: match => ({ body: match[1] }),
@@ -22,7 +22,7 @@
     });
     CMS.registerEditorComponent({
       id: 'small-text',
-      label: '文字を小さく',
+      label: '小文字',
       fields: [{ name: 'body', label: '文字', widget: 'string' }],
       pattern: /^\{small\}([\s\S]*?)\{\/small\}$/,
       fromBlock: match => ({ body: match[1] }),
@@ -31,7 +31,7 @@
     });
     CMS.registerEditorComponent({
       id: 'pink-text',
-      label: 'ピンク文字',
+      label: 'ピンク',
       fields: [{ name: 'body', label: '文字', widget: 'string' }],
       pattern: /^\{pink\}([\s\S]*?)\{\/pink\}$/,
       fromBlock: match => ({ body: match[1] }),

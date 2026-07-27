@@ -901,12 +901,25 @@ async function loadContentData(){
    ・marked.js が読み込めている場合はそれを使い、太字・見出し・リンク・画像などを反映します
    ・読み込めなかった場合は改行だけ反映する簡易表示にフォールバックします
    ===================================================== */
+/* =====================================================
+   本文中の {large}...{/large} {small}...{/small} {pink}...{/pink}
+   という書き方を、実際のスタイル(文字サイズ・ピンク色)に変換する
+   ===================================================== */
+function applyCustomFormatting(text){
+  if(!text) return text;
+  return text
+    .replace(/\{large\}([\s\S]*?)\{\/large\}/g, '<span class="text-lg">$1</span>')
+    .replace(/\{small\}([\s\S]*?)\{\/small\}/g, '<span class="text-sm">$1</span>')
+    .replace(/\{pink\}([\s\S]*?)\{\/pink\}/g, '<span class="text-pink">$1</span>');
+}
+
 function renderMarkdown(text){
   if(!text) return '';
+  const withCustomTags = applyCustomFormatting(text);
   if(window.marked && typeof window.marked.parse === 'function'){
-    return window.marked.parse(text);
+    return window.marked.parse(withCustomTags);
   }
-  const escaped = text
+  const escaped = withCustomTags
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');

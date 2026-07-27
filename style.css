@@ -171,10 +171,11 @@ button{ font-family: inherit; }
 .detail-artist{
   margin-bottom: 24px;
 }
-/* 本文の文字サイズを少し大きく */
+/* 本文の文字サイズを少し大きく、色は黒に */
 .view__desc p{
   font-size: 15px;
   line-height: 1.9;
+  color: var(--black);
 }
 /* 本文中のリンクは水色・下線で表示 */
 .view__desc a{
@@ -210,6 +211,16 @@ button{ font-family: inherit; }
 /* Xの投稿を埋め込んだときの見た目調整 */
 .view__desc .twitter-tweet{
   margin: 20px 0;
+}
+/* 本文中で {large}...{/large} {small}...{/small} {pink}...{/pink} と書いた部分の見た目 */
+.view__desc .text-lg{
+  font-size: 1.35em;
+}
+.view__desc .text-sm{
+  font-size: 0.8em;
+}
+.view__desc .text-pink{
+  color: #F8ABA6; /* カーソルの線と同じピンク */
 }
 
 /* =====================================================

@@ -317,7 +317,7 @@ button{ font-family: inherit; }
   z-index: 150;
   display:flex;
   flex-direction:column;
-  padding: 16px 8vw 40px;
+  padding: 14px 8vw 40px;
   gap: 6px;
   overflow-y:auto;
 }

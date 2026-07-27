@@ -1068,10 +1068,18 @@ function updateBottomBackVisibility(viewId, backBtnId){
   const view = document.getElementById(viewId);
   const btn = document.getElementById(backBtnId);
   if(!view || !btn) return;
-  requestAnimationFrame(() => {
+  const recalc = () => {
     const contentHeight = view.scrollHeight;
     const visibleHeight = (viewPane ? viewPane.clientHeight : 0) || window.innerHeight;
-    btn.style.display = contentHeight > visibleHeight * 1.2 ? '' : 'none';
+    // 画面の高さを超えてスクロールが必要になった時点で、上のサムネイルが見えなくなるので表示する
+    btn.style.display = contentHeight > visibleHeight ? '' : 'none';
+  };
+  requestAnimationFrame(recalc);
+  // 画像の読み込みが完了すると高さが変わることがあるので、そのたびに再判定する
+  view.querySelectorAll('img').forEach(img => {
+    if(!img.complete){
+      img.addEventListener('load', recalc, { once: true });
+    }
   });
 }
 

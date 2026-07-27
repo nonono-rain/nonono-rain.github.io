@@ -1082,6 +1082,24 @@ function groupConsecutiveImages(container){
 }
 
 /* =====================================================
+   X(旧Twitter)の埋め込み用スクリプトを、必要になった時だけ読み込む
+   （投稿を1つも貼っていないページでは、余計な通信をしないようにするため）
+   ===================================================== */
+let twitterWidgetsLoadPromise = null;
+function loadTwitterWidgetsScript(){
+  if(window.twttr && window.twttr.widgets) return Promise.resolve();
+  if(twitterWidgetsLoadPromise) return twitterWidgetsLoadPromise;
+  twitterWidgetsLoadPromise = new Promise(resolve => {
+    const script = document.createElement('script');
+    script.src = 'https://platform.twitter.com/widgets.js';
+    script.async = true;
+    script.onload = () => resolve();
+    document.head.appendChild(script);
+  });
+  return twitterWidgetsLoadPromise;
+}
+
+/* =====================================================
    X(旧Twitter)の投稿リンクを埋め込みカードに変換する
    ・本文中で、Xの投稿URLだけが単独で書かれている行が対象です
    ・（例: 文章の途中に貼ったリンクはそのままリンクとして表示されます）
@@ -1090,6 +1108,7 @@ function enhanceTweetEmbeds(container){
   if(!container) return;
   const tweetUrlPattern = /^https?:\/\/(twitter\.com|x\.com)\/[^\/]+\/status\/\d+/i;
   const paragraphs = container.querySelectorAll('p');
+  let foundTweet = false;
   paragraphs.forEach(p => {
     const onlyChildLink = p.children.length === 1 && p.children[0].tagName === 'A' && p.textContent.trim() === p.children[0].textContent.trim();
     if(!onlyChildLink) return;
@@ -1101,9 +1120,14 @@ function enhanceTweetEmbeds(container){
     a.href = href;
     blockquote.appendChild(a);
     p.replaceWith(blockquote);
+    foundTweet = true;
   });
-  if(window.twttr && window.twttr.widgets && typeof window.twttr.widgets.load === 'function'){
-    window.twttr.widgets.load(container);
+  if(foundTweet){
+    loadTwitterWidgetsScript().then(() => {
+      if(window.twttr && window.twttr.widgets && typeof window.twttr.widgets.load === 'function'){
+        window.twttr.widgets.load(container);
+      }
+    });
   }
 }
 

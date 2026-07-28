@@ -473,6 +473,7 @@ function openBlogDetail(post){
   updateBottomBackVisibility(!!(post.body && post.body.trim()), 'blogDetailBackBottom');
 
   switchPanel('blog-detail', true);
+  if(post.id) setUrlPath(`/blog/${post.id}`);
 }
 
 /* =====================================================
@@ -500,6 +501,7 @@ function openOriginalDetail(id){
   updateBottomBackVisibility(!!(w.body && w.body.trim()), 'originalDetailBackBottom');
 
   switchPanel('original-detail', true);
+  setUrlPath(`/mv/${id}`);
 }
 
 /* =====================================================
@@ -685,6 +687,7 @@ function openWorkDetail(id){
   updateBottomBackVisibility(!!(w.detail && w.detail.trim()), 'workDetailBackBottom');
 
   switchPanel('work-detail', true);
+  setUrlPath(`/works/${id}`);
 }
 
 /* =====================================================
@@ -759,6 +762,48 @@ const VIDEO_PANELS = {
 // 各パネルのスクロール位置を覚えておいて、戻ってきたときに続きから見られるようにする
 const scrollPositions = {};
 
+/* =====================================================
+   URLで特定のページに直接リンクできるようにする仕組み
+   ・ページを移動するたびにURLのパス部分を書き換える（見た目は変えず、履歴だけ追加）
+   ・/mv/xxx のようなURLで直接アクセスされた時や、ブラウザの戻る/進むボタンでも正しいページを開く
+   ===================================================== */
+function setUrlPath(path){
+  const target = (path.startsWith('/') ? path : '/' + path) + location.search;
+  if(location.pathname + location.search !== target){
+    history.pushState(null, '', target);
+  }
+}
+
+function applyRouteFromPath(){
+  const segments = location.pathname.split('/').filter(Boolean); // 例: "/mv/mv-05" -> ["mv","mv-05"]
+  if(segments.length === 0){
+    switchPanel('top', true);
+    return;
+  }
+  const [type, id] = segments;
+  if(type === 'blog' && id){
+    const post = blogPosts.find(p => p.id === id);
+    if(post){ openBlogDetail(post); return; }
+  }else if(type === 'mv' && id){
+    if(mvWorks.find(x => x.id === id)){ openOriginalDetail(id); return; }
+  }else if(type === 'works' && id){
+    if(otherWorks.find(x => x.id === id)){ openWorkDetail(id); return; }
+  }else if(type === 'blog'){
+    switchPanel('blog', true);
+    return;
+  }else if(type === 'contact'){
+    switchPanel('contact', true);
+    return;
+  }else if(type === 'listening'){
+    switchPanel('listening', true);
+    return;
+  }
+  // 該当するページが見つからない場合はTOPを表示する
+  switchPanel('top', true);
+}
+
+window.addEventListener('popstate', applyRouteFromPath);
+
 function switchPanel(panelName, forceTop){
   const currentActive = document.querySelector('.view.is-active');
 
@@ -808,6 +853,13 @@ function switchPanel(panelName, forceTop){
 
   // 画面が切り替わったら、スマホのメニューは必ず閉じておく（閉じ忘れの保険）
   closeMobileNav();
+
+  // シンプルなページ（項目IDを持たないもの）だけ、ここでURLを更新する
+  // original-detail / work-detail / blog-detail は、それぞれの専用関数側でIDまで含めて更新する
+  if(panelName === 'top') setUrlPath('/');
+  else if(panelName === 'blog') setUrlPath('/blog');
+  else if(panelName === 'contact') setUrlPath('/contact');
+  else if(panelName === 'listening') setUrlPath('/listening');
 }
 
 document.querySelectorAll('a[data-panel]').forEach(el => {
@@ -915,6 +967,7 @@ async function loadContentData(){
     blogPosts = blogData.items || [];
     mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
     renderBlog('blogList'); // ブログのデータが揃ってから一覧を描画する
+    if(location.pathname !== '/' && location.pathname !== '') applyRouteFromPath(); // /mv/xxx のようなURLで直接アクセスされた場合、そのページを開く
   }catch(err){
     console.error('コンテンツデータ(mv.json / works.json / blog.json)の読み込みに失敗しました', err);
   }

@@ -453,7 +453,7 @@ function openCategoryView(section, category){
     renderThumbList('originalCategoryGrid', items, 'original');
     document.getElementById('originalCategoryLabel').textContent = cat;
     switchPanel('original-category', true);
-    setUrlPath(`/${cat}`);
+    setUrlPath(`/original/${cat}`);
   }else{
     const items = otherWorks.filter(w => matchesCategory(w, cat)).sort(byNewest);
     renderThumbList('worksCategoryGrid', items, 'work');
@@ -513,7 +513,7 @@ function setUrlPath(path){
 }
 
 function applyRouteFromPath(){
-  const segments = location.pathname.split('/').filter(Boolean); // 例: "/mv/mv-05" -> ["mv","mv-05"]
+  const segments = location.pathname.split('/').filter(Boolean); // 例: "/original/mv-05" -> ["original","mv-05"]
   if(segments.length === 0){
     switchPanel('top', true);
     return;
@@ -523,23 +523,24 @@ function applyRouteFromPath(){
   const worksCategories = ['video', 'music', 'design', 'others'];
 
   if(second){
-    // 2つめの区切りがある = 詳細ページ、またはworksのカテゴリ一覧
+    // 2つめの区切りがある = カテゴリ一覧、または詳細ページ
     if(first === 'blog'){
       const post = blogPosts.find(p => p.id === second);
       if(post){ openBlogDetail(post); return; }
     }else if(first === 'original'){
+      if(originalCategories.includes(second)){ openCategoryView('original', second); return; }
       if(mvWorks.find(x => x.id === second)){ openOriginalDetail(second); return; }
     }else if(first === 'works'){
       if(worksCategories.includes(second)){ openCategoryView('works', second); return; }
       if(otherWorks.find(x => x.id === second)){ openWorkDetail(second); return; }
     }
   }else{
-    // 区切りが1つだけ = カテゴリ一覧、またはシンプルなページ
-    if(originalCategories.includes(first)){ openCategoryView('original', first); return; }
-    if(first === 'works'){ openCategoryView('works', ''); return; }
+    // 区切りが1つだけ = シンプルなページ
     if(first === 'blog'){ switchPanel('blog', true); return; }
     if(first === 'contact'){ switchPanel('contact', true); return; }
     if(first === 'listening'){ switchPanel('listening', true); return; }
+    if(first === 'original'){ openCategoryView('original', ''); return; }
+    if(first === 'works'){ openCategoryView('works', ''); return; }
   }
   // 該当するページが見つからない場合はTOPを表示する
   switchPanel('top', true);
@@ -699,21 +700,29 @@ if(mobileMenuTrigger){
    ===================================================== */
 async function loadContentData(){
   try{
-    const [mvData, worksData, blogData, othersData, releasesData, designData] = await Promise.all([
+    const [mvData, blogData, othersData, releasesData, designData, worksVideoData, worksMusicData, worksDesignData, worksOthersData] = await Promise.all([
       fetch('data/mv.json').then(res => res.json()),
-      fetch('data/works.json').then(res => res.json()),
       fetch('data/blog.json').then(res => res.json()),
       fetch('data/others.json').then(res => res.json()),
       fetch('data/releases.json').then(res => res.json()),
-      fetch('data/design.json').then(res => res.json())
+      fetch('data/design.json').then(res => res.json()),
+      fetch('data/works-video.json').then(res => res.json()),
+      fetch('data/works-music.json').then(res => res.json()),
+      fetch('data/works-design.json').then(res => res.json()),
+      fetch('data/works-others.json').then(res => res.json())
     ]);
     // 各JSONファイルは { "items": [...] } という形式になっています
     mv = mvData.items || [];
-    otherWorks = worksData.items || [];
     blogPosts = blogData.items || [];
     originalOthers = othersData.items || [];
     releases = releasesData.items || [];
     originalDesign = designData.items || [];
+    otherWorks = [
+      ...(worksVideoData.items || []),
+      ...(worksMusicData.items || []),
+      ...(worksDesignData.items || []),
+      ...(worksOthersData.items || [])
+    ];
     mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
     renderBlog('blogList'); // ブログのデータが揃ってから一覧を描画する
     if(location.pathname !== '/' && location.pathname !== '') applyRouteFromPath(); // /mv/xxx のようなURLで直接アクセスされた場合、そのページを開く

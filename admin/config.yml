@@ -83,6 +83,7 @@ collections:
             widget: "list"
             summary: "{{title}}"
             fields:
+              - { label: "ID(既存のものは変更しないでください)", name: "id", widget: "string", hint: "他のページへのリンク用の固有IDです。新しい記事には new-post-01 のような未使用の値を付けてください" }
               - { label: "タイトル", name: "title", widget: "string" }
               - { label: "ひとこと説明(一覧用)", name: "excerpt", widget: "string" }
               - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }

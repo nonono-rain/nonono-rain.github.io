@@ -42,6 +42,74 @@ collections:
                 buttons: ["bold", "heading-two", "heading-three", "link"]
                 editor_components: ["single-image", "image", "large-text", "small-text", "pink-text"]
 
+  # ===== ORIGINAL - OTHERS =====
+  - name: "original-others"
+    label: "Original / Others"
+    files:
+      - name: "others_list"
+        label: "Others一覧"
+        file: "data/others.json"
+        fields:
+          - label: "項目"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "ID(既存のものは変更しないでください)", name: "id", widget: "string" }
+              - { label: "カテゴリ", name: "category", widget: "string", default: "others" }
+              - { label: "タイトル", name: "title", widget: "string" }
+              - { label: "アーティスト", name: "artist", widget: "string" }
+              - { label: "YouTube ID", name: "youtubeId", widget: "string", required: false, hint: "動画URLの v= のあとの11文字" }
+              - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+              - label: "本文(詳細ページに表示)"
+                name: "body"
+                widget: "markdown"
+                required: false
+                modes: ["rich_text"]
+                buttons: ["bold", "heading-two", "heading-three", "link"]
+                editor_components: ["single-image", "image", "large-text", "small-text", "pink-text"]
+
+  # ===== ORIGINAL - RELEASES =====
+  - name: "original-releases"
+    label: "Original / Releases"
+    files:
+      - name: "releases_list"
+        label: "Releases一覧"
+        file: "data/releases.json"
+        fields:
+          - label: "項目"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "ID(既存のものは変更しないでください)", name: "id", widget: "string" }
+              - { label: "カテゴリ", name: "category", widget: "string", default: "releases" }
+              - { label: "タイトル", name: "title", widget: "string" }
+              - { label: "アーティスト", name: "artist", widget: "string" }
+              - { label: "画像", name: "thumbnail", widget: "image" }
+              - { label: "リンク(画像を押したときの飛び先)", name: "link", widget: "string" }
+              - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+
+  # ===== ORIGINAL - DESIGN =====
+  - name: "original-design"
+    label: "Original / Design"
+    files:
+      - name: "design_list"
+        label: "Design一覧"
+        file: "data/design.json"
+        fields:
+          - label: "項目"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "ID(既存のものは変更しないでください)", name: "id", widget: "string" }
+              - { label: "カテゴリ", name: "category", widget: "string", default: "design" }
+              - { label: "タイトル", name: "title", widget: "string" }
+              - { label: "説明", name: "artist", widget: "string" }
+              - { label: "画像", name: "thumbnail", widget: "image" }
+              - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+
   # ===== WORKS(video / music / design / others) =====
   - name: "works"
     label: "Works"

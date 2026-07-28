@@ -26,277 +26,13 @@
 // 各項目には body（詳細ページの本文、Markdown形式）が追加されています
 let mv = [];
 
-const releases = [
+// releases のデータは data/releases.json から読み込みます（下の loadContentData() を参照）
+let releases = [];
 
-  {
-  id: "releases-01",
-  title: "転がるくせ",
-  artist: "ナースロボ＿タイプT、転音セラ",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/jacket/転がるくせジャケット.png",
-  link: "https://big-up.style/Foe6wALhZS",
-  category: "releases",
-  date: "2025-10-10" 
-  },
-  {
-  id: "releases-02",
-  title: "ブラックボックス！",
-  artist: "重音テト、ナースロボ＿タイプT",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/jacket/ブラックボックス！ジャケット.png",
-  link: "https://big-up.style/oABzXyO9Ji",
-  category: "releases",
-  date: "2025-11-11" 
-  },
-  {
-  id: "releases-03",
-  title: "ホワイトスペースにおいで",
-  artist: "ナースロボ＿タイプT、重音テト",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/jacket/ホワイトスペースにおいでジャケット.png",
-  link: "https://big-up.style/1XjSLEWe87",
-  category: "releases",
-  date: "2025-12-13" 
-  },
-  {
-  id: "releases-04",
-  title: "なりますように！",
-  artist: "70D",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/jacket/なりますように！ジャケット.png",
-  link: "https://big-up.style/zBjMrYcRIk",
-  category: "releases",
-  date: "2026-02-26" 
-  },
-  {
-  id: "releases-05",
-  title: "不こうにしちゃう",
-  artist: "donor.",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/jacket/不こうにしちゃうジャケット.jpeg",
-  link: "https://big-up.style/osqhAuFWOH",
-  category: "releases",
-  date: "2026-03-22" 
-  },
-  {
-  id: "releases-06",
-  title: "mosaique",
-  artist: "カゼヒキ、ナースロボ＿タイプT",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/jacket/mosaiqueジャケット.png",
-  link: "https://big-up.style/MR0xenrYVt",
-  category: "releases",
-  date: "2026-06-24" 
-  },
-  {
-  id: "releases-07",
-  title: "むすんで、ひらいて",
-  artist: "ボカロPx歌い手7組によるコンピレーションアルバム",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/jacket/むすんで、ひらいてジャケット.jpg",
-  link: "https://euhi2525.booth.pm/items/8273782",
-  category: "releases",
-  date: "2026-04-26" 
-  },
-];
-
-const originalDesign = [
-
-  {
-  id: "design-01",
-  title: "日常系",
-  artist: "「がっこうぐらし！」第一話より",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/日常系.png",
-  category: "design",
-  date: "2025-1-31" 
-  },
-  {
-  id: "design-02",
-  title: "青",
-  artist: "初音ミク",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/初音ミク青2.png",
-  category: "design",
-  date: "2024-08-20" 
-  },
-  {
-  id: "design-03",
-  title: "バレてたらどうしよう",
-  artist: "Auauo「バレてたらどうしよう」",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/バレてたらどうしよう.png",
-  category: "design",
-  date: "2025-02-15" 
-  },
-  {
-  id: "design-04",
-  title: "不良品回収",
-  artist: "オリジナル",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/ごめんなさい.png",
-  category: "design",
-  date: "2024-08-18" 
-  },
-  {
-  id: "design-05",
-  title: "塩水",
-  artist: "感情線「コトノネ」",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/塩水.png",
-  category: "design",
-  date: "2025-10-10" 
-  },
-  {
-  id: "design-06",
-  title: "電線",
-  artist: "オリジナル",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/電線.jpg",
-  category: "design",
-  date: "2025-10-29" 
-  },
-  {
-  id: "design-07",
-  title: "黄金数",
-  artist: "いよわ「黄金数」",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/黄金数1.jpg",
-  category: "design",
-  date: "2025-11-18" 
-  },
-  {
-  id: "design-08",
-  title: "生活は簡単じゃないね",
-  artist: "式浦躁吾「生活は簡単じゃないね」",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/生活は簡単じゃないね.jpg",
-  category: "design",
-  date: "2025-11-22" 
-  },
-  {
-  id: "design-09",
-  title: "珊瑚",
-  artist: "ピンク髪のアニメキャラたち",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/珊瑚.png",
-  category: "design",
-  date: "2026-05-05" 
-  },
-  {
-  id: "design-10",
-  title: "過ぎていく",
-  artist: "初音ミク",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/過ぎていく.gif",
-  category: "design",
-  date: "2025-05-18" 
-  },
-  {
-  id: "design-11",
-  title: "通学路",
-  artist: "donor.チームカード",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/donor.チームカード.png",
-  category: "design",
-  date: "2026-06-25" 
-  },
-  {
-  id: "design-12",
-  title: "謝ってますじゃんね",
-  artist: "椎野乃々「私の生活感」",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/私の生活感jyake１.png",
-  category: "design",
-  date: "2026-01-09" 
-  },
-  {
-  id: "design-13",
-  title: "男児創造",
-  artist: "Ç¢Çª「makeaboy」",
-  youtubeId: "動画ID",
-  thumbnail: "assets/original/design/makeaboygif.gif",
-  category: "design",
-  date: "2026-04-11" 
-  },
-];
-// ORIGINALの「others」カテゴリの作品はまだ無いので、空の配列にしています
-// （中身を追加すれば「others」カテゴリに表示されます。書き方はmv・releases・originalDesignと同じです）
-const originalOthers = [
-  {  
-  id: "others-01", 
-  title: "ヒロイン",
-  artist: "重音テト",     
-  youtubeId: "1wCb_dUL8QE", 
-  category: "others",      
-  date: "2024-08-04" 
-  },
-  {  
-  id: "others-02", 
-  title: "会話記録",
-  artist: "ナースロボ＿タイプT",     
-  youtubeId: "jOgPZFkrJdA", 
-  category: "others",      
-  date: "2024-09-03" 
-  },
-  {  
-  id: "others-03", 
-  title: "アレシボメッセージなう",
-  artist: "ナースロボ＿タイプT",     
-  youtubeId: "j6ZyrQuX1es", 
-  category: "others",      
-  date: "2024-11-03" 
-  },
-  {  
-  id: "others-04", 
-  title: "大雨症候群(remake)",
-  artist: "デフォ子",     
-  youtubeId: "iput0DL6kpQ", 
-  category: "others",      
-  date: "2025-01-04" 
-  },
-  {  
-  id: "others-05", 
-  title: "特定班(remake)",
-  artist: "ナースロボ＿タイプT",     
-  youtubeId: "mkTXIsoXGaE", 
-  category: "others",      
-  date: "2025-04-04" 
-  },
-  {  
-  id: "others-06", 
-  title: "文字、ノート上の",
-  artist: "ナースロボ＿タイプT",     
-  youtubeId: "GponJnt0eOI", 
-  category: "others",      
-  date: "2025-05-24" 
-  },
-  {  
-  id: "others-07", 
-  title: "「なりますように！」メイキング動画",
-  artist: "作曲から映像制作までのメイキング",     
-  youtubeId: "8y5xmxVM5zQ", 
-  category: "others",      
-  date: "2026-02-14" 
-  },
-  {  
-  id: "others-08", 
-  title: "REEL 2025",
-  artist: "2025年に作った制作物まとめ",     
-  youtubeId: "zVnUdcKjlCo", 
-  category: "others",      
-  date: "2026-05-11" 
-  },
-  {  
-  id: "others-09", 
-  title: "雨のなか　歩いてみた",
-  artist: "はじめてのVlog風動画",     
-  youtubeId: "cV9jKpZZrw0", 
-  category: "others",      
-  date: "2026-06-12" 
-  },
-
-];
+// originalDesign のデータは data/design.json から読み込みます（下の loadContentData() を参照）
+let originalDesign = [];
+// originalOthers のデータは data/others.json から読み込みます（下の loadContentData() を参照）
+let originalOthers = [];
 
 // mv.jsonの読み込みが終わるまでは releases/design/others だけの状態になっています
 // loadContentData() の中で mv.json 読み込み後に組み直されます
@@ -501,7 +237,7 @@ function openOriginalDetail(id){
   updateBottomBackVisibility(!!(w.body && w.body.trim()), 'originalDetailBackBottom');
 
   switchPanel('original-detail', true);
-  setUrlPath(`/mv/${id}`);
+  setUrlPath(`/original/${id}`);
 }
 
 /* =====================================================
@@ -791,7 +527,7 @@ function applyRouteFromPath(){
     if(first === 'blog'){
       const post = blogPosts.find(p => p.id === second);
       if(post){ openBlogDetail(post); return; }
-    }else if(first === 'mv'){
+    }else if(first === 'original'){
       if(mvWorks.find(x => x.id === second)){ openOriginalDetail(second); return; }
     }else if(first === 'works'){
       if(worksCategories.includes(second)){ openCategoryView('works', second); return; }
@@ -963,20 +699,26 @@ if(mobileMenuTrigger){
    ===================================================== */
 async function loadContentData(){
   try{
-    const [mvData, worksData, blogData] = await Promise.all([
+    const [mvData, worksData, blogData, othersData, releasesData, designData] = await Promise.all([
       fetch('data/mv.json').then(res => res.json()),
       fetch('data/works.json').then(res => res.json()),
-      fetch('data/blog.json').then(res => res.json())
+      fetch('data/blog.json').then(res => res.json()),
+      fetch('data/others.json').then(res => res.json()),
+      fetch('data/releases.json').then(res => res.json()),
+      fetch('data/design.json').then(res => res.json())
     ]);
-    // data/mv.json, data/works.json, data/blog.json は { "items": [...] } という形式になっています
+    // 各JSONファイルは { "items": [...] } という形式になっています
     mv = mvData.items || [];
     otherWorks = worksData.items || [];
     blogPosts = blogData.items || [];
+    originalOthers = othersData.items || [];
+    releases = releasesData.items || [];
+    originalDesign = designData.items || [];
     mvWorks = [...mv, ...releases, ...originalDesign, ...originalOthers];
     renderBlog('blogList'); // ブログのデータが揃ってから一覧を描画する
     if(location.pathname !== '/' && location.pathname !== '') applyRouteFromPath(); // /mv/xxx のようなURLで直接アクセスされた場合、そのページを開く
   }catch(err){
-    console.error('コンテンツデータ(mv.json / works.json / blog.json)の読み込みに失敗しました', err);
+    console.error('コンテンツデータの読み込みに失敗しました', err);
   }
 }
 

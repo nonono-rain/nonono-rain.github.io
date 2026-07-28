@@ -717,11 +717,13 @@ function openCategoryView(section, category){
     renderThumbList('originalCategoryGrid', items, 'original');
     document.getElementById('originalCategoryLabel').textContent = cat;
     switchPanel('original-category', true);
+    setUrlPath(`/${cat}`);
   }else{
     const items = otherWorks.filter(w => matchesCategory(w, cat)).sort(byNewest);
     renderThumbList('worksCategoryGrid', items, 'work');
     document.getElementById('worksCategoryLabel').textContent = cat;
     switchPanel('works-category', true);
+    setUrlPath(`/works/${cat}`);
   }
 }
 
@@ -780,23 +782,28 @@ function applyRouteFromPath(){
     switchPanel('top', true);
     return;
   }
-  const [type, id] = segments;
-  if(type === 'blog' && id){
-    const post = blogPosts.find(p => p.id === id);
-    if(post){ openBlogDetail(post); return; }
-  }else if(type === 'mv' && id){
-    if(mvWorks.find(x => x.id === id)){ openOriginalDetail(id); return; }
-  }else if(type === 'works' && id){
-    if(otherWorks.find(x => x.id === id)){ openWorkDetail(id); return; }
-  }else if(type === 'blog'){
-    switchPanel('blog', true);
-    return;
-  }else if(type === 'contact'){
-    switchPanel('contact', true);
-    return;
-  }else if(type === 'listening'){
-    switchPanel('listening', true);
-    return;
+  const [first, second] = segments;
+  const originalCategories = ['mv', 'releases', 'design', 'others'];
+  const worksCategories = ['video', 'music', 'design', 'others'];
+
+  if(second){
+    // 2つめの区切りがある = 詳細ページ、またはworksのカテゴリ一覧
+    if(first === 'blog'){
+      const post = blogPosts.find(p => p.id === second);
+      if(post){ openBlogDetail(post); return; }
+    }else if(first === 'mv'){
+      if(mvWorks.find(x => x.id === second)){ openOriginalDetail(second); return; }
+    }else if(first === 'works'){
+      if(worksCategories.includes(second)){ openCategoryView('works', second); return; }
+      if(otherWorks.find(x => x.id === second)){ openWorkDetail(second); return; }
+    }
+  }else{
+    // 区切りが1つだけ = カテゴリ一覧、またはシンプルなページ
+    if(originalCategories.includes(first)){ openCategoryView('original', first); return; }
+    if(first === 'works'){ openCategoryView('works', ''); return; }
+    if(first === 'blog'){ switchPanel('blog', true); return; }
+    if(first === 'contact'){ switchPanel('contact', true); return; }
+    if(first === 'listening'){ switchPanel('listening', true); return; }
   }
   // 該当するページが見つからない場合はTOPを表示する
   switchPanel('top', true);

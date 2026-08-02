@@ -164,7 +164,7 @@ button{ font-family: inherit; }
   font-size: 13px;
   line-height: 2;
   color: var(--gray);
-  max-width: 440px;
+  max-width: 600px;
 }
 /* ===== Decap CMSで編集する本文まわりのスタイル ===== */
 /* アーティスト名と本文の間隔 */
@@ -177,6 +177,7 @@ button{ font-family: inherit; }
   font-size: 17px;
   line-height: 1.8;
   color: var(--black);
+  margin-bottom: 1.2em;
 }
 /* 本文中のリンクは水色・下線で表示 */
 .view__desc a{

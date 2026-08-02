@@ -100,7 +100,8 @@ collections:
               - { label: "カテゴリ", name: "category", widget: "string", default: "others" }
               - { label: "タイトル", name: "title", widget: "string" }
               - { label: "アーティスト", name: "artist", widget: "string" }
-              - { label: "YouTube ID", name: "youtubeId", widget: "string", required: false, hint: "動画URLの v= のあとの11文字" }
+              - { label: "YouTube ID", name: "youtubeId", widget: "string", required: false, hint: "動画URLの v= のあとの11文字。YouTubeに上げていない場合は空欄にして、下のサムネイル欄を使ってください" }
+              - { label: "サムネイル(画像・GIF・動画mp4)", name: "thumbnail", widget: "file", required: false, hint: "YouTube IDが空欄のときに使われます。jpg/png/gif/mp4に対応しています" }
               - { label: "日付", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
               - label: "本文(詳細ページに表示)"
                 name: "body"

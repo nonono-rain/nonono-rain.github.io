@@ -43,25 +43,25 @@
       id: 'single-image',
       label: 'Image(大)',
       fields: [
-        { name: 'src', label: '画像', widget: 'image' },
+        { name: 'src', label: '画像・動画(mp4)', widget: 'file' },
         { name: 'text', label: '説明書き', widget: 'string', required: false },
       ],
       pattern: /^\{fullimg src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
       fromBlock: match => ({ src: match[1], text: match[2] || '' }),
       toBlock: data => `{fullimg src="${data.src || ''}"${data.text ? ` text="${data.text}"` : ''}}`,
-      toPreview: data => `<img src="${data.src}" style="width:100%;" />${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
+      toPreview: data => `${/\.mp4($|\?)/i.test(data.src || '') ? `<video src="${data.src}" controls style="width:100%;"></video>` : `<img src="${data.src}" style="width:100%;" />`}${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
     });
     CMS.registerEditorComponent({
       id: 'image',
       label: 'Image(小)',
       fields: [
-        { name: 'src', label: '画像', widget: 'image' },
+        { name: 'src', label: '画像・動画(mp4)', widget: 'file' },
         { name: 'text', label: '説明書き', widget: 'string', required: false },
       ],
       pattern: /^\{img src="([^"]*)"(?:\s+text="([^"]*)")?\}$/,
       fromBlock: match => ({ src: match[1], text: match[2] || '' }),
       toBlock: data => `{img src="${data.src || ''}"${data.text ? ` text="${data.text}"` : ''}}`,
-      toPreview: data => `<img src="${data.src}" style="max-width:100%;" />${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
+      toPreview: data => `${/\.mp4($|\?)/i.test(data.src || '') ? `<video src="${data.src}" controls style="max-width:100%;"></video>` : `<img src="${data.src}" style="max-width:100%;" />`}${data.text ? `<div style="font-size:12px;color:#999;">${data.text}</div>` : ''}`,
     });
   </script>
 

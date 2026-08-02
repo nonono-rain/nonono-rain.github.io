@@ -761,6 +761,7 @@ function applyCustomFormatting(text){
     .replace(/\{large\}([\s\S]*?)\{\/large\}/g, '<span class="text-lg">$1</span>')
     .replace(/\{small\}([\s\S]*?)\{\/small\}/g, '<span class="text-sm">$1</span>')
     .replace(/\{pink\}([\s\S]*?)\{\/pink\}/g, '<span class="text-pink">$1</span>')
+    .replace(/^\{br\}$/gm, '<div class="blank-line"></div>')
     .replace(/\{img src="([^"]*)"(?:\s+text="([^"]*)")?\}/g, (_, src, caption) => {
       const media = isVideoFile(src)
         ? `<video src="${src}" controls playsinline></video>`

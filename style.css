@@ -177,7 +177,7 @@ button{ font-family: inherit; }
   font-size: 17px;
   line-height: 1.8;
   color: var(--black);
-  margin-bottom: 1.2em;
+  margin-bottom: 0.6em;
 }
 /* 本文中のリンクは水色・下線で表示 */
 .view__desc a{
@@ -227,6 +227,10 @@ button{ font-family: inherit; }
   color: var(--gray);
   margin-top: 6px;
   line-height: 1.5;
+}
+/* 本文中で {br} と単独で書いた場所に、意図的な1行分の空白を入れる */
+.view__desc .blank-line{
+  height: 1em;
 }
 /* Xの投稿を埋め込んだときの見た目調整 */
 .view__desc .twitter-tweet{

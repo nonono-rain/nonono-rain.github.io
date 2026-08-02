@@ -114,6 +114,10 @@ function renderListening(){
    サムネイル一覧の描画（ORIGINAL・WORKS共通）
    type: 'original' または 'work'
    ===================================================== */
+function isVideoFile(src){
+  return !!src && /\.(mp4|webm|mov)(\?|$)/i.test(src);
+}
+
 function renderThumbList(containerId, items, type){
   const container = document.getElementById(containerId);
   if(!container) return;
@@ -121,6 +125,9 @@ function renderThumbList(containerId, items, type){
   container.innerHTML = items.map(item => {
     if(type === 'original'){
       const thumbSrc = item.thumbnail ? item.thumbnail : `https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`;
+      const thumbHtml = isVideoFile(thumbSrc)
+        ? `<video src="${thumbSrc}" muted autoplay loop playsinline onerror="this.remove()"></video>`
+        : `<img src="${thumbSrc}" alt="${item.title}" loading="lazy" onerror="this.remove()">`;
       const isDesign = matchesCategory(item, 'design');
       const isLink = !isDesign && !!item.link;
       const tag = isLink ? 'a' : 'div';
@@ -129,7 +136,7 @@ function renderThumbList(containerId, items, type){
       return `
         <${tag} class="thumb-item" data-item-id="${item.id}"${linkAttrs}${designAttr}>
           <div class="thumb-item__thumb">
-            <img src="${thumbSrc}" alt="${item.title}" loading="lazy" onerror="this.remove()">
+            ${thumbHtml}
           </div>
           <p class="thumb-item__title">${item.title}</p>
           <div class="thumb-item__row">
@@ -139,13 +146,16 @@ function renderThumbList(containerId, items, type){
         </${tag}>`;
     }
     const thumbSrc = item.youtubeId ? `https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg` : item.thumbnail;
+    const thumbHtml = isVideoFile(thumbSrc)
+      ? `<video src="${thumbSrc}" muted autoplay loop playsinline onerror="this.remove()"></video>`
+      : `<img src="${thumbSrc}" alt="${item.title}" loading="lazy" onerror="this.remove()">`;
     const isLink = !!item.link;
     const tag = isLink ? 'a' : 'div';
     const linkAttrs = isLink ? ` href="${item.link}" target="_blank" rel="noopener"` : '';
     return `
       <${tag} class="thumb-item" data-item-id="${item.id}"${linkAttrs}>
         <div class="thumb-item__thumb">
-          <img src="${thumbSrc}" alt="${item.title}" loading="lazy" onerror="this.remove()">
+          ${thumbHtml}
         </div>
         <p class="thumb-item__title">${item.title}</p>
         <div class="thumb-item__row">
@@ -222,6 +232,8 @@ function openOriginalDetail(id){
   const media = document.getElementById('originalDetailMedia');
   if(w.youtubeId){
     media.innerHTML = `<iframe src="https://www.youtube.com/embed/${w.youtubeId}" title="${w.title}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  }else if(isVideoFile(w.thumbnail)){
+    media.innerHTML = `<video src="${w.thumbnail}" controls playsinline></video>`;
   }else{
     media.innerHTML = `<img src="${w.thumbnail}" alt="${w.title}" onerror="this.remove()">`;
   }
@@ -407,6 +419,8 @@ function openWorkDetail(id){
   const media = document.getElementById('workDetailMedia');
   if(w.youtubeId){
     media.innerHTML = `<iframe src="https://www.youtube.com/embed/${w.youtubeId}" title="${w.title}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  }else if(isVideoFile(w.thumbnail)){
+    media.innerHTML = `<video src="${w.thumbnail}" controls playsinline></video>`;
   }else{
     media.innerHTML = `<img src="${w.thumbnail}" alt="${w.title}" onerror="this.remove()">`;
   }
@@ -747,10 +761,18 @@ function applyCustomFormatting(text){
     .replace(/\{large\}([\s\S]*?)\{\/large\}/g, '<span class="text-lg">$1</span>')
     .replace(/\{small\}([\s\S]*?)\{\/small\}/g, '<span class="text-sm">$1</span>')
     .replace(/\{pink\}([\s\S]*?)\{\/pink\}/g, '<span class="text-pink">$1</span>')
-    .replace(/\{img src="([^"]*)"(?:\s+text="([^"]*)")?\}/g, (_, src, caption) =>
-      `<div class="img-unit"><img src="${src}" alt="">${caption ? `<span class="img-caption">${caption}</span>` : ''}</div>`)
-    .replace(/\{fullimg src="([^"]*)"(?:\s+text="([^"]*)")?\}/g, (_, src, caption) =>
-      `<div class="img-full"><img src="${src}" alt="">${caption ? `<span class="img-caption">${caption}</span>` : ''}</div>`);
+    .replace(/\{img src="([^"]*)"(?:\s+text="([^"]*)")?\}/g, (_, src, caption) => {
+      const media = isVideoFile(src)
+        ? `<video src="${src}" controls playsinline></video>`
+        : `<img src="${src}" alt="">`;
+      return `<div class="img-unit">${media}${caption ? `<span class="img-caption">${caption}</span>` : ''}</div>`;
+    })
+    .replace(/\{fullimg src="([^"]*)"(?:\s+text="([^"]*)")?\}/g, (_, src, caption) => {
+      const media = isVideoFile(src)
+        ? `<video src="${src}" controls playsinline></video>`
+        : `<img src="${src}" alt="">`;
+      return `<div class="img-full">${media}${caption ? `<span class="img-caption">${caption}</span>` : ''}</div>`;
+    });
 }
 
 function renderMarkdown(text){

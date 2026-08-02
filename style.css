@@ -203,7 +203,7 @@ button{ font-family: inherit; }
   gap: 12px;
   margin: 12px 0;
 }
-.view__desc .img-unit img{
+.view__desc .img-unit img, .view__desc .img-unit video{
   width: 100%;
   height: auto;
   display: block;
@@ -213,7 +213,7 @@ button{ font-family: inherit; }
 .view__desc .img-full{
   margin: 20px 0;
 }
-.view__desc .img-full img{
+.view__desc .img-full img, .view__desc .img-full video{
   width: 100%;
   height: auto;
   display: block;
@@ -501,11 +501,11 @@ button{ font-family: inherit; }
   background: var(--white); /* 余白部分もページの背景色と同じにする */
   margin-bottom: 14px;
 }
-.thumb-item__thumb img{
+.thumb-item__thumb img, .thumb-item__thumb video{
   width:100%; height:100%; object-fit: contain; display:block;
   transition: opacity .25s var(--ease);
 }
-.thumb-item:hover .thumb-item__thumb img{ opacity:.85; }
+.thumb-item:hover .thumb-item__thumb img, .thumb-item:hover .thumb-item__thumb video{ opacity:.85; }
 .thumb-item__title{ font-weight:700; font-size: 14px; margin-bottom: 6px; }
 .thumb-item__row{
   display:flex;
@@ -532,6 +532,7 @@ button{ font-family: inherit; }
   margin-bottom: 32px;
 }
 .detail-thumb img{ width:100%; height:100%; object-fit: contain; display:block; }
+.detail-thumb video{ width:100%; height:100%; object-fit: contain; display:block; }
 .detail-thumb iframe{ width:100%; height:100%; border:0; display:block; }
 
 /* =====================================================
